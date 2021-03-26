@@ -91,8 +91,44 @@ func get_adjacent(position):
 			return move_pattern_results(position, generate_moves("R"), ROTATE) + move_pattern_results(position, generate_moves("R"), ROTATE)
 
 
+func _generate_arc(position, distance):
+	var arc = Array()
+	for i in range(1, distance + 1):
+		var sequence = str(i) + "U"
+		if distance - i > 0:
+			sequence +=  str(distance - i) + "R"
+		var move = generate_moves(sequence)
+		arc += Array(_get_rotations(move))
+		
+	var results = PoolVector2Array()
+	for move in arc:
+		var result = move_pattern_results(position, move)
+		if result:
+			results += result
+	return results
+
+
+func get_at_distance(position, distance):
+	match distance:
+		0:
+			var result = PoolVector2Array()
+			result.append(position)
+			return result
+		1:
+			return get_adjacent(position)
+		_:
+			return _generate_arc(position, distance)
+
+
+func get_distance_range(position, lower, upper):
+	var results = PoolVector2Array()
+	for i in range(lower, upper + 1):
+		results += get_at_distance(position, i)
+	return results
+
+
 func get_within_distance(position, dist):
-	pass
+	return get_distance_range(position, 0, dist)
 
 
 func is_position_valid(position):
@@ -107,14 +143,20 @@ func is_direction_valid(position, direction):
 
 
 func get_all():
-	return get_in_bounds(Vector2(0, 0), Vector2(dimensions.x - 1, dimensions.y - 1))
+	return get_in_bounds(Vector2(0, 0), Vector2(dimensions.x, dimensions.y))
 
 
 func get_in_bounds(position, bounds):
-	pass
+	var results = PoolVector2Array()
+	for i in range(bounds.y):
+		for j in range(bounds.x):
+			var point = position + Vector2(j, i)
+			if is_position_valid(point):
+				results.append(point)
+	return results
 
 
-func move_pattern_results(position, moves, mirroring_mode, repeat = 0):
+func move_pattern_results(position, moves, mirroring_mode = NONE, repeat = 0):
 	var batch
 	match mirroring_mode:
 		NONE:
