@@ -8,6 +8,8 @@ var bishop = MovePattern.new("RU", MovePattern.ROTATE, -1)
 var rook = MovePattern.new("R", MovePattern.ROTATE, -1)
 var knight = MovePattern.new("2RU", MovePattern.ROTATE_MIRROR)
 
+var move_possibilies = PoolVector2Array()
+
 
 func is_move_valid(piece, start, end):
 	if end:
@@ -15,7 +17,7 @@ func is_move_valid(piece, start, end):
 			var position = grid.convert_1d_to_2d(start.id)
 			var possible = grid.get_pattern_results(position, bishop)
 			var aim = grid.convert_1d_to_2d(end.id)
-			if aim in possible:
+			if aim in possible and end.can_accept_piece(piece):
 				return true
 			return false
 		else:
@@ -23,11 +25,25 @@ func is_move_valid(piece, start, end):
 	else:
 		return false
 
+
 func move_piece(piece, to):
-	if to == piece.origin_zone:
-		to.piece_added(piece)
-		emit_signal("piece_moved", piece, to)
-	else:
-		piece.origin_zone = to
-		to.piece_added(piece)
-		emit_signal("piece_moved", piece, to)
+	.move_piece(piece, to)
+
+
+func focus_piece(piece):
+	var position = grid.convert_1d_to_2d(piece.origin_zone.id)
+	move_possibilies = grid.get_pattern_results(position, bishop)
+	.focus_piece(piece)
+
+
+func unfocus_piece(piece):
+	move_possibilies = PoolVector2Array()
+	.unfocus_piece(piece)
+
+
+func is_valid_endpoint(zone):
+	var position = grid.convert_1d_to_2d(zone.id)
+	return position in move_possibilies
+
+
+

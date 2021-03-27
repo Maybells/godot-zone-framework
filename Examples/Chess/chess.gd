@@ -8,19 +8,25 @@ onready var game = ChessLogic.new()
 
 # Generates the grid of chess tiles
 func _ready():
-	var p = piece.instance()
-	p.game = game
-	p.position = Vector2(190, 350)
-	add_child(p)
-	
 	var index = 0
 	for point in $Grid.points:
 		var t = tile.instance()
 		t.id = index
+		t.game = game
 		t.position = $Grid.position + point
 		var rank = index % 8
 		var file = index / 8
 		t.is_white = (rank + file) % 2 == 0
 		add_child(t)
 		
+		if file <= 1 or file >= 6:
+			var p = piece.instance()
+			p.game = game
+			t.piece_added(p)
+			add_child(p)
+		
 		index += 1
+
+
+func _process(delta):
+	game.tick()

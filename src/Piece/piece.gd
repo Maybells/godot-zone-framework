@@ -5,10 +5,13 @@ var origin_zone
 var overlap_zone
 var id
 var game
+var last_position
 
 
 func _process(delta):
-	overlap_zone = _get_overlap()
+	if position != last_position:
+		last_position = position
+		overlap_zone = _get_overlap()
 
 
 # Returns first overlapping zone. If no zones are in range returns null
@@ -19,6 +22,7 @@ func _get_overlap():
 			return over
 		else:
 			$ZoneDetector.add_exception(over)
+			$ZoneDetector.force_raycast_update()
 			return _get_overlap()
 	else:
 		return null

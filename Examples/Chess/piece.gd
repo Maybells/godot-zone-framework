@@ -28,17 +28,22 @@ func _process(delta):
 func _on_input_event(viewport, event, shape_idx):
 	if event is InputEventMouseButton:
 		if event.button_index == BUTTON_LEFT and event.pressed:
-			if not holding:
+			if not holding and not game.has_focus() and not game.just_unfocused():
 				_pick_up()
-			else:
+			elif game.is_focused(self):
 				_put_down()
 
 
 func _pick_up():
-	holding = true
+	if not game.has_focus():
+		z_index += 1
+		game.focus_piece(self)
+		holding = true
 
 
 func _put_down():
+	z_index -= 1
+	game.unfocus_piece(self)
 	if game.is_move_valid(self, origin_zone, overlap_zone):
 		holding = false
 		game.move_piece(self, overlap_zone)
