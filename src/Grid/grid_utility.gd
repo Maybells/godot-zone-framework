@@ -48,8 +48,8 @@ func _calculate_move_sequence_results(position, moves, repeat):
 # Turns a 1d array index into a 2d one
 # Example: 3 in 2x2 grid -> (1, 1)
 func convert_1d_to_2d(index):
-	var x = index % dimensions.y
-	var y = index / dimensions.y
+	var x = index % int(dimensions.y)
+	var y = index / int(dimensions.y)
 	return Vector2(x, y)
 
 
@@ -76,9 +76,9 @@ func get_adjacent(position):
 	var diagonal = MovePattern.new("RU", MovePattern.ROTATE)
 	match adjacency_mode:
 		ORTHOGONAL:
-			return move_pattern_results(position, orthogonal)
+			return get_pattern_results(position, orthogonal)
 		OCTILINEAR:
-			return move_pattern_results(position, orthogonal) + move_pattern_results(position, diagonal)
+			return get_pattern_results(position, orthogonal) + get_pattern_results(position, diagonal)
 
 
 func _generate_arc(position, distance):
@@ -88,7 +88,7 @@ func _generate_arc(position, distance):
 		if distance - i > 0:
 			sequence +=  str(distance - i) + "R"
 		var pattern = MovePattern.new(sequence, MovePattern.ROTATE)
-		var results = move_pattern_results(position, pattern)
+		var results = get_pattern_results(position, pattern)
 		arc += results
 	return arc
 
@@ -105,7 +105,7 @@ func _generate_corner(position, distance):
 			sequence = str(i - distance) + "U"
 			sequence +=  str(distance) + "R"
 		var pattern = MovePattern.new(sequence, MovePattern.ROTATE)
-		var results = move_pattern_results(position, pattern)
+		var results = get_pattern_results(position, pattern)
 		corner += results
 	return corner
 
@@ -161,7 +161,7 @@ func get_in_bounds(position, bounds):
 	return results
 
 
-func move_pattern_results(position, pattern):
+func get_pattern_results(position, pattern):
 	var batch
 	match pattern.mode:
 		MovePattern.NONE:

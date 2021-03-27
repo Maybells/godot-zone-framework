@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Reference",
+"class": "ChessLogic",
+"language": "GDScript",
+"path": "res://Examples/Chess/chess_logic.gd"
+}, {
 "base": "MoveSequence",
 "class": "GridMoveSequence",
 "language": "GDScript",
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://src/GameLogic/MoveSequence/move_sequence.gd"
 } ]
 _global_script_class_icons={
+"ChessLogic": "",
 "GridMoveSequence": "",
 "GridUtility": "",
 "MovePattern": "",
@@ -41,10 +47,6 @@ _global_script_class_icons={
 config/name="LogicZone Framework"
 run/main_scene="res://Examples/Chess/chess.tscn"
 config/icon="res://icon.png"
-
-[autoload]
-
-game="*res://Examples/Chess/chess_logic.gd"
 
 [rendering]
 

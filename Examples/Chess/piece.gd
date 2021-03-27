@@ -1,10 +1,12 @@
 extends "res://src/Piece/piece.gd"
 
+
 export (Color) var white = Color(204, 183, 174)
 export (Color) var black = Color(112, 102, 119)
+
+
 var is_white = true
 var color
-
 var holding = false
 
 

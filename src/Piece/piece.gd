@@ -4,10 +4,7 @@ extends Node2D
 var origin_zone
 var overlap_zone
 var id
-
-
-func _ready():
-	pass
+var game
 
 
 func _process(delta):

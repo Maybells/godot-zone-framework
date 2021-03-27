@@ -1,13 +1,7 @@
-extends Node
-
-
 signal game_reset
 signal game_initialized
 signal piece_moved(piece, to)
 
-
-func _ready():
-	pass
 
 # Returns true if the game logic allows piece to go from start to end
 func is_move_valid(piece, start, end):
