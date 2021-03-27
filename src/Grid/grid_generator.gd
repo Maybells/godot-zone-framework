@@ -11,7 +11,8 @@ var points = PoolVector2Array()
 
 func _ready():
 	var g = GridUtility.new(Vector2(columns, rows))
-	print(g.move_pattern_results(Vector2(2, 2), g.generate_moves("LLU"), GridUtility.ROTATE_MIRROR))
+	var bishop = MovePattern.new("RU", MovePattern.ROTATE, -1)
+	print(g.move_pattern_results(Vector2(1, 1), bishop))
 
 
 func _draw():

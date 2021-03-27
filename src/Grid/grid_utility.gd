@@ -5,14 +5,6 @@ class_name GridUtility
 # OCTILINEAR is ORTHOGONAL adjacency plus diagonals
 enum {ORTHOGONAL, OCTILINEAR}
 
-# NONE will not mirror or rotate moves
-# MIRROR_X mirrors across the y axis
-# MIRROR_Y mirrors across the x axis
-# MIRROR_XY mirrors across the x and y axes
-# ROTATE mirrors radially
-# ROTATE_MIRROR mirrors radially and across the radius
-enum {NONE, MIRROR_X, MIRROR_Y, MIRROR_XY, ROTATE, ROTATE_MIRROR}
-
 
 var dimensions
 var adjacency_mode
@@ -79,33 +71,26 @@ func is_corner(position):
 	return horiz_edge and vert_edge
 
 
-func generate_moves(string):
-	return GridMoveSequence.new(string)
-
-
 func get_adjacent(position):
+	var orthogonal = MovePattern.new("R", MovePattern.ROTATE)
+	var diagonal = MovePattern.new("RU", MovePattern.ROTATE)
 	match adjacency_mode:
 		ORTHOGONAL:
-			return move_pattern_results(position, generate_moves("R"), ROTATE)
+			return move_pattern_results(position, orthogonal)
 		OCTILINEAR:
-			return move_pattern_results(position, generate_moves("R"), ROTATE) + move_pattern_results(position, generate_moves("R"), ROTATE)
+			return move_pattern_results(position, orthogonal) + move_pattern_results(position, diagonal)
 
 
 func _generate_arc(position, distance):
-	var arc = Array()
+	var arc = PoolVector2Array()
 	for i in range(1, distance + 1):
 		var sequence = str(i) + "U"
 		if distance - i > 0:
 			sequence +=  str(distance - i) + "R"
-		var move = generate_moves(sequence)
-		arc += Array(_get_rotations(move))
-		
-	var results = PoolVector2Array()
-	for move in arc:
-		var result = move_pattern_results(position, move)
-		if result:
-			results += result
-	return results
+		var pattern = MovePattern.new(sequence, MovePattern.ROTATE)
+		var results = move_pattern_results(position, pattern)
+		arc += results
+	return arc
 
 
 func get_at_distance(position, distance):
@@ -156,22 +141,22 @@ func get_in_bounds(position, bounds):
 	return results
 
 
-func move_pattern_results(position, moves, mirroring_mode = NONE, repeat = 0):
+func move_pattern_results(position, pattern):
 	var batch
-	match mirroring_mode:
-		NONE:
-			return _calculate_move_sequence_results(position, moves, repeat)
-		ROTATE:
-			batch = _get_rotations(moves)
-		MIRROR_X:
-			batch = _get_mirror_x(moves)
-		MIRROR_Y:
-			batch = _get_mirror_y(moves)
-		MIRROR_XY:
-			batch = _get_mirror_xy(moves)
-		ROTATE_MIRROR:
-			batch = _get_mirror_rotations(moves)
-	return _batch_move_results(position, batch, repeat)
+	match pattern.mode:
+		MovePattern.NONE:
+			return _calculate_move_sequence_results(position, pattern.moves, pattern.repeat)
+		MovePattern.ROTATE:
+			batch = _get_rotations(pattern.moves)
+		MovePattern.MIRROR_X:
+			batch = _get_mirror_x(pattern.moves)
+		MovePattern.MIRROR_Y:
+			batch = _get_mirror_y(pattern.moves)
+		MovePattern.MIRROR_XY:
+			batch = _get_mirror_xy(pattern.moves)
+		MovePattern.ROTATE_MIRROR:
+			batch = _get_mirror_rotations(pattern.moves)
+	return _batch_move_results(position, batch, pattern.repeat)
 
 
 # Replaces all move A's in the sequence with B's and vice versa
