@@ -93,6 +93,23 @@ func _generate_arc(position, distance):
 	return arc
 
 
+func _generate_corner(position, distance):
+	var corner = PoolVector2Array()
+	for i in range(0, distance * 2):
+		var sequence
+		if i <= distance:
+			sequence = str(distance) + "U"
+			if i > 0:
+				sequence +=  str(i) + "R"
+		else:
+			sequence = str(i - distance) + "U"
+			sequence +=  str(distance) + "R"
+		var pattern = MovePattern.new(sequence, MovePattern.ROTATE)
+		var results = move_pattern_results(position, pattern)
+		corner += results
+	return corner
+
+
 func get_at_distance(position, distance):
 	match distance:
 		0:
@@ -102,7 +119,10 @@ func get_at_distance(position, distance):
 		1:
 			return get_adjacent(position)
 		_:
-			return _generate_arc(position, distance)
+			if adjacency_mode == ORTHOGONAL:
+				return _generate_arc(position, distance)
+			elif adjacency_mode == OCTILINEAR:
+				return _generate_corner(position, distance)
 
 
 func get_distance_range(position, lower, upper):
