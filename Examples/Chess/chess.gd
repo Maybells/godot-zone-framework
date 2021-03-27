@@ -1,6 +1,9 @@
 extends Node2D
 
 
+const BACK_ROW = [ChessLogic.ROOK, ChessLogic.KNIGHT, ChessLogic.BISHOP, ChessLogic.KING, ChessLogic.QUEEN, ChessLogic.BISHOP, ChessLogic.KNIGHT, ChessLogic.ROOK]
+
+
 onready var tile = preload("res://Examples/Chess/tile.tscn")
 onready var piece = preload("res://Examples/Chess/piece.tscn")
 onready var game = ChessLogic.new()
@@ -20,8 +23,7 @@ func _ready():
 		add_child(t)
 		
 		if file <= 1 or file >= 6:
-			var p = piece.instance()
-			p.game = game
+			var p = _generate_piece_at(rank, file)
 			t.piece_added(p)
 			add_child(p)
 		
@@ -30,3 +32,25 @@ func _ready():
 
 func _process(delta):
 	game.tick()
+
+
+func _generate_piece_at(rank, file):
+	var p = piece.instance()
+	p.game = game
+	
+	if file <= 1:
+		p.is_white = false
+	elif file >= 6:
+		p.is_white = true
+	
+	if file == 1 or file == 6:
+		p.type = ChessLogic.PAWN
+	elif file == 0 or file == 7:
+		p.type = BACK_ROW[rank]
+	
+	return p
+
+
+
+
+

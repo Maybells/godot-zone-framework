@@ -1,11 +1,12 @@
 extends "res://src/Piece/piece.gd"
 
 
-export (Color) var white = Color(204, 183, 174)
-export (Color) var black = Color(112, 102, 119)
+export (Color) var white = Color.white
+export (Color) var black = Color.black
 
 
 var is_white = true
+var type
 var color
 var holding = false
 
@@ -18,6 +19,10 @@ func _ready():
 		color = white
 	else:
 		color = black
+
+
+func _draw():
+	draw_rect(Rect2(Vector2(-24, -24), Vector2(48, 48)), color)
 
 
 func _process(delta):

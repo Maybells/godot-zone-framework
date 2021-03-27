@@ -11,6 +11,7 @@ z_index = 1
 script = ExtResource( 2 )
 
 [node name="ColorRect" type="ColorRect" parent="." index="0"]
+visible = false
 margin_left = -24.0
 margin_top = -24.0
 margin_right = 24.0
