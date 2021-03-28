@@ -1,6 +1,16 @@
 extends "res://src/Piece/piece.gd"
 
 
+const PIECE_MAP = {
+	ChessLogic.PAWN: "pawn",
+	ChessLogic.QUEEN: "queen",
+	ChessLogic.KING: "king",
+	ChessLogic.ROOK: "rook",
+	ChessLogic.BISHOP: "bishop",
+	ChessLogic.KNIGHT: "knight"
+}
+
+
 export (Color) var white = Color.white
 export (Color) var black = Color.black
 
@@ -15,14 +25,7 @@ func _ready():
 	$ZoneDetector.add_exception($ClickArea)
 	
 	$ClickArea.connect("input_event", self, "_on_input_event")
-	if is_white:
-		color = white
-	else:
-		color = black
-
-
-func _draw():
-	draw_rect(Rect2(Vector2(-24, -24), Vector2(48, 48)), color)
+	_load_icon()
 
 
 func _process(delta):
@@ -37,6 +40,18 @@ func _on_input_event(viewport, event, shape_idx):
 				_pick_up()
 			elif game.is_focused(self):
 				_put_down()
+
+
+func _load_icon():
+	var icon = ""
+	if is_white:
+		icon += "white"
+	else:
+		icon += "black"
+	
+	icon += "_"
+	icon += PIECE_MAP[type]
+	$Sprite.texture = load("res://Examples/Chess/Images/" + icon + ".png")
 
 
 func _pick_up():
