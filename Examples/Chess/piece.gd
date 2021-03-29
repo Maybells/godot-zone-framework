@@ -62,12 +62,13 @@ func _pick_up():
 
 
 func _put_down():
-	z_index -= 1
-	game.unfocus_piece(self)
 	if game.is_move_valid(self, origin_zone, overlap_zone):
+		z_index -= 1
+		game.unfocus_piece(self)
 		holding = false
 		game.move_piece(self, overlap_zone)
 	else:
-		holding = false
-		if origin_zone:
-			game.move_piece(self, origin_zone)
+		pass
+#		holding = false
+#		if origin_zone:
+#			game.move_piece(self, origin_zone)
