@@ -6,7 +6,7 @@ class_name ChessLogic
 enum {QUEEN, KING, PAWN, KNIGHT, ROOK, BISHOP}
 
 
-var grid = GridUtility.new(Vector2(8, 8))
+var grid = SquareGridUtility.new(Vector2(8, 8))
 var pawn_up = MovePattern.new("U")
 var pawn_down = MovePattern.new("D")
 var bishop = MovePattern.new("RU", MovePattern.ROTATE, -1)
@@ -19,7 +19,7 @@ var move_possibilies = PoolVector2Array()
 
 
 func _get_possibilities(piece):
-	var position = grid.convert_1d_to_2d(piece.origin_zone.id)
+	var position = grid.convert_index_to_position(piece.origin_zone.id)
 	match piece.type:
 		PAWN:
 			if piece.is_white:
@@ -42,7 +42,7 @@ func is_move_valid(piece, start, end):
 	if end:
 		if start:
 			var possible = _get_possibilities(piece)
-			var aim = grid.convert_1d_to_2d(end.id)
+			var aim = grid.convert_index_to_position(end.id)
 			if aim in possible and end.can_accept_piece(piece):
 				return true
 			return false
@@ -67,7 +67,7 @@ func unfocus_piece(piece):
 
 
 func is_valid_endpoint(zone):
-	var position = grid.convert_1d_to_2d(zone.id)
+	var position = grid.convert_index_to_position(zone.id)
 	return position in move_possibilies
 
 

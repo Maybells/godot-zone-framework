@@ -22,4 +22,4 @@ func _init(moves, mode = NONE, repeat = 0):
 
 
 func _generate_moves(string):
-	return GridMoveSequence.new(string)
+	return SquareMoveSequence.new(string)

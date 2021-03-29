@@ -14,11 +14,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Examples/Chess/chess_logic.gd"
 }, {
-"base": "MoveSequence",
-"class": "GridMoveSequence",
-"language": "GDScript",
-"path": "res://src/GameLogic/MoveSequence/grid_move_sequence.gd"
-}, {
 "base": "Reference",
 "class": "GridUtility",
 "language": "GDScript",
@@ -27,19 +22,30 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "MovePattern",
 "language": "GDScript",
-"path": "res://src/GameLogic/MoveSequence/move_pattern.gd"
+"path": "res://src/Grid/MoveSequence/move_pattern.gd"
 }, {
 "base": "Reference",
 "class": "MoveSequence",
 "language": "GDScript",
-"path": "res://src/GameLogic/MoveSequence/move_sequence.gd"
+"path": "res://src/Grid/MoveSequence/move_sequence.gd"
+}, {
+"base": "GridUtility",
+"class": "SquareGridUtility",
+"language": "GDScript",
+"path": "res://src/Grid/SquareGrid/square_grid_utility.gd"
+}, {
+"base": "MoveSequence",
+"class": "SquareMoveSequence",
+"language": "GDScript",
+"path": "res://src/Grid/SquareGrid/square_move_sequence.gd"
 } ]
 _global_script_class_icons={
 "ChessLogic": "",
-"GridMoveSequence": "",
 "GridUtility": "",
 "MovePattern": "",
-"MoveSequence": ""
+"MoveSequence": "",
+"SquareGridUtility": "",
+"SquareMoveSequence": ""
 }
 
 [application]

@@ -14,7 +14,7 @@ func _ready():
 
 
 func _draw():
-	if true or Engine.editor_hint:
+	if Engine.editor_hint:
 		for point in points:
 			var corner = Vector2(point.x - (cell_size.x/2.0), point.y - (cell_size.y/2.0))
 			draw_rect(Rect2(corner, cell_size), Color(255, 255, 255))
