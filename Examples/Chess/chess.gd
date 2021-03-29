@@ -1,7 +1,7 @@
 extends Node2D
 
 
-const BACK_ROW = [ChessLogic.ROOK, ChessLogic.KNIGHT, ChessLogic.BISHOP, ChessLogic.KING, ChessLogic.QUEEN, ChessLogic.BISHOP, ChessLogic.KNIGHT, ChessLogic.ROOK]
+const BACK_ROW = [ChessLogic.ROOK, ChessLogic.KNIGHT, ChessLogic.BISHOP, ChessLogic.QUEEN, ChessLogic.KING, ChessLogic.BISHOP, ChessLogic.KNIGHT, ChessLogic.ROOK]
 
 
 onready var tile = preload("res://Examples/Chess/tile.tscn")
