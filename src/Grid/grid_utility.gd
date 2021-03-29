@@ -9,14 +9,10 @@ func _init(dimens):
 	dimensions = dimens
 
 
-func _position_in_direction(position, direction):
-	return position + direction
-
-
 func _move_sequence_results(position, moves):
 	for move in moves.sequence:
 		if is_direction_valid(position, move):
-			position = _position_in_direction(position, move)
+			position = position_in_direction(position, move)
 		else:
 			return false
 	return position
@@ -81,6 +77,10 @@ func convert_position_to_index(position):
 	return
 
 
+func position_in_direction(position, direction):
+	return position + direction
+
+
 func get_adjacent(position):
 	return get_at_distance(position, 1)
 
@@ -104,7 +104,7 @@ func is_position_valid(position):
 
 
 func is_direction_valid(position, direction):
-	var result = _position_in_direction(position, direction)
+	var result = position_in_direction(position, direction)
 	return is_position_valid(result)
 
 

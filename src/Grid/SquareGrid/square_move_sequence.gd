@@ -90,9 +90,9 @@ func _clear_buffer():
 
 
 # Returns a sequence with all move A's replaced with B's and vice versa
-func _switch_moves(a, b):
+func _switch_moves(moves, a, b):
 	var replacement = Array()
-	for move in sequence:
+	for move in moves:
 		if move == a:
 			replacement.append(b)
 		elif move == b:
@@ -137,9 +137,15 @@ func get_rotation(rotations = 1):
 
 # Returns sequence mirrored across the y-axis
 func get_mirror_x():
-	return _switch_moves(LEFT, RIGHT)
+	var mirror = _switch_moves(sequence, LEFT, RIGHT)
+	mirror = _switch_moves(mirror, DIAG_UL, DIAG_UR)
+	mirror = _switch_moves(mirror, DIAG_DL, DIAG_DR)
+	return mirror
 
 
 # Returns sequence mirrored across the x-axis
 func get_mirror_y():
-	return _switch_moves(UP, DOWN)
+	var mirror = _switch_moves(sequence, UP, DOWN)
+	mirror = _switch_moves(mirror, DIAG_UL, DIAG_DL)
+	mirror = _switch_moves(mirror, DIAG_UR, DIAG_DR)
+	return mirror

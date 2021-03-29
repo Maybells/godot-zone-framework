@@ -19,6 +19,9 @@ var is_white = true
 var type
 var color
 var holding = false
+var first_move = true
+var pawn_diag = false
+var captured = false
 
 
 func _ready():
@@ -34,12 +37,13 @@ func _process(delta):
 
 
 func _on_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT and event.pressed:
-			if not holding and not game.has_focus() and not game.just_unfocused():
-				_pick_up()
-			elif game.is_focused(self):
-				_put_down()
+	if not captured:
+		if event is InputEventMouseButton:
+			if event.button_index == BUTTON_LEFT and event.pressed:
+				if not holding and not game.has_focus() and not game.just_unfocused():
+					_pick_up()
+				elif game.is_focused(self):
+					_put_down()
 
 
 func _load_icon():
@@ -63,6 +67,8 @@ func _pick_up():
 
 func _put_down():
 	if game.is_move_valid(self, origin_zone, overlap_zone):
+		if origin_zone != overlap_zone:
+			first_move = false
 		z_index -= 1
 		game.unfocus_piece(self)
 		holding = false
@@ -74,6 +80,7 @@ func _put_down():
 #			game.move_piece(self, origin_zone)
 
 func captured():
+	captured = true
 	game.unregister_piece(self)
 	origin_zone.piece_removed(self)
 	queue_free()

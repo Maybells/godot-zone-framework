@@ -24,10 +24,24 @@ func _get_possibilities(piece):
 	var position = _position_of_zone(piece.origin_zone)
 	match piece.type:
 		PAWN:
+			var pawn
+			var pawn_diag
+			
 			if piece.is_white:
-				possibilities += grid.get_pattern_results(position, pawn_up)
+				pawn = pawn_up
+				pawn_diag = MovePattern.new("/RU", MovePattern.MIRROR_X)
 			else:
-				possibilities += grid.get_pattern_results(position, pawn_down)
+				pawn = pawn_down
+				pawn_diag = MovePattern.new("/RD", MovePattern.MIRROR_X)
+			
+			if piece.first_move:
+				pawn.repeat = 1
+			else:
+				pawn.repeat = 0
+			
+			possibilities += grid.get_pattern_results(position, pawn)
+			if piece.pawn_diag:
+				possibilities += grid.get_pattern_results(position, pawn_diag)
 		KNIGHT:
 			possibilities += grid.get_pattern_results(position, knight)
 		ROOK:
@@ -44,22 +58,40 @@ func _get_possibilities(piece):
 
 func _generate_obstacles(piece):
 	grid.clear_obstacles()
+	piece.pawn_diag = false
 	
 	for p in pieces:
 		if p.is_white == piece.is_white:
 			var obstacle = GridObstacle.new()
+			
 			if piece.type == KNIGHT:
 				obstacle.type = GridObstacle.INVALID_END
+			
 			obstacle.position = _position_of_zone(p.origin_zone)
 			grid.add_obstacle(obstacle)
 		else:
 			var obstacle = GridObstacle.new(GridObstacle.STICKY)
 			obstacle.position = _position_of_zone(p.origin_zone)
+			
+			if piece.type == PAWN:
+				if not _is_pawn_diagonal(obstacle.position, piece):
+					obstacle.type = GridObstacle.IMPASSABLE
+				else:
+					piece.pawn_diag = true
+			
 			grid.add_obstacle(obstacle)
 
 
 func _position_of_zone(zone):
 	return grid.convert_index_to_position(zone.id)
+
+
+func _is_pawn_diagonal(position, piece):
+	var location = _position_of_zone(piece.origin_zone)
+	if piece.is_white:
+		return position == location + SquareMoveSequence.DIAG_UL or position == location + SquareMoveSequence.DIAG_UR
+	else:
+		return position == location + SquareMoveSequence.DIAG_DL or position == location + SquareMoveSequence.DIAG_DR
 
 
 func is_move_valid(piece, start, end):
