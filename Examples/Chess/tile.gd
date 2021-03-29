@@ -26,10 +26,17 @@ func _draw():
 
 
 func can_accept_piece(piece):
-	return pieces.empty() or piece.origin_zone == self
+	if pieces.empty():
+		return true
+	var p = pieces[0]
+	if p and p.is_white != piece.is_white:
+		return true
+	return piece.origin_zone == self
 
 
 func piece_added(piece, location = null):
+	for p in pieces:
+		p.captured()
 	.piece_added(piece, location)
 	piece.position = position
 

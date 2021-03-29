@@ -64,14 +64,11 @@ func _position_of_zone(zone):
 
 func is_move_valid(piece, start, end):
 	if end:
-		if start:
-			var possible = _get_possibilities(piece)
-			var aim = _position_of_zone(end)
-			if aim in possible and end.can_accept_piece(piece):
-				return true
-			return false
-		else:
+		var possible = _get_possibilities(piece)
+		var aim = _position_of_zone(end)
+		if aim in possible and end.can_accept_piece(piece):
 			return true
+		return false
 	else:
 		return false
 

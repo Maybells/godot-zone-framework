@@ -72,3 +72,8 @@ func _put_down():
 #		holding = false
 #		if origin_zone:
 #			game.move_piece(self, origin_zone)
+
+func captured():
+	game.unregister_piece(self)
+	origin_zone.piece_removed(self)
+	queue_free()
