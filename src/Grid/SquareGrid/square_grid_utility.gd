@@ -21,6 +21,15 @@ func _move_sequence_from_moves(moves):
 	return sequence
 
 
+func _distance_between_points(from, to):
+	var difference = from - to
+	match adjacency_mode:
+		ORTHOGONAL:
+			return abs(difference.x) + abs(difference.y)
+		OCTILINEAR:
+			return max(abs(difference.x), abs(difference.y))
+
+
 # Example: 3 in 2x2 grid -> (1, 1)
 func convert_index_to_position(index):
 	var x = index % int(dimensions.y)
@@ -45,14 +54,19 @@ func is_corner(position):
 	return horiz_edge and vert_edge
 
 
-func get_adjacent(position):
-	var orthogonal = MovePattern.new("R", MovePattern.ROTATE)
-	var diagonal = MovePattern.new("RU", MovePattern.ROTATE)
-	match adjacency_mode:
-		ORTHOGONAL:
-			return get_pattern_results(position, orthogonal)
-		OCTILINEAR:
-			return get_pattern_results(position, orthogonal) + get_pattern_results(position, diagonal)
+func get_distance_range(position, lower, upper):
+	var results = PoolVector2Array()
+	var width = (2 * upper) + 1
+	var top_corner = Vector2(position.x - upper, position.y - upper)
+	for i in range(width):
+		for j in range(width):
+			var point = Vector2(j, i)
+			point += top_corner
+			if is_position_valid(point):
+				var dist = _distance_between_points(position, point)
+				if dist >= lower and dist <= upper:
+					results.append(point)
+	return results
 
 
 func _generate_arc(position, distance):
@@ -82,21 +96,6 @@ func _generate_corner(position, distance):
 		var results = get_pattern_results(position, pattern)
 		corner += results
 	return corner
-
-
-func get_at_distance(position, distance):
-	match distance:
-		0:
-			var result = PoolVector2Array()
-			result.append(position)
-			return result
-		1:
-			return get_adjacent(position)
-		_:
-			if adjacency_mode == ORTHOGONAL:
-				return _generate_arc(position, distance)
-			elif adjacency_mode == OCTILINEAR:
-				return _generate_corner(position, distance)
 
 
 func is_position_valid(position):

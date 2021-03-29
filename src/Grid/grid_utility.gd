@@ -57,6 +57,10 @@ func _move_sequence_from_moves(moves):
 	return sequence
 
 
+func _distance_between_points(from, to):
+	return
+
+
 func convert_index_to_position(index):
 	return
 
@@ -66,26 +70,17 @@ func convert_position_to_index(position):
 
 
 func get_adjacent(position):
-	return
+	return get_at_distance(position, 1)
 
 
 func get_at_distance(position, distance):
-	match distance:
-		0:
-			var result = PoolVector2Array()
-			result.append(position)
-			return result
-		1:
-			return get_adjacent(position)
-		_:
-			return get_within_distance(position, distance)
+	if distance == 0:
+		return position
+	return get_distance_range(position, distance, distance)
 
 
 func get_distance_range(position, lower, upper):
-	var results = PoolVector2Array()
-	for i in range(lower, upper + 1):
-		results += get_at_distance(position, i)
-	return results
+	return
 
 
 func get_within_distance(position, distance):
