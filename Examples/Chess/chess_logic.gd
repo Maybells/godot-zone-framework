@@ -8,6 +8,7 @@ const WHITE = true
 const BLACK = false
 
 
+signal turn_changed(current_turn)
 signal king_checked(color)
 signal king_not_checked(color)
 
@@ -131,6 +132,7 @@ func _is_in_check(color):
 
 func _next_turn():
 	current_turn = not current_turn
+	emit_signal("turn_changed", current_turn)
 
 
 func is_move_valid(piece, start, end):

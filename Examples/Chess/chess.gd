@@ -28,6 +28,7 @@ func _ready():
 			add_child(p)
 		
 		index += 1
+	game.connect("turn_changed", self, "_turn_changed")
 
 
 func _process(delta):
@@ -51,6 +52,10 @@ func _generate_piece_at(rank, file):
 	return p
 
 
-
+func _turn_changed(to):
+	if to == ChessLogic.WHITE:
+		$Label.text = "White's Turn"
+	else:
+		$Label.text = "Black's Turn"
 
 
