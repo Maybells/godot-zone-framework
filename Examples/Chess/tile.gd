@@ -2,7 +2,7 @@ extends "res://src/Zone/zone.gd"
 
 var white = Color(111/255.0, 143/255.0, 114/255.0)
 var black = Color(173/255.0, 189/255.0, 143/255.0)
-var highlighted = Color.darkgreen
+var highlighted = Color(1, 1, 1, 0.75)
 var is_white = true
 var color
 
@@ -19,10 +19,9 @@ func _ready():
 
 func _draw():
 	var rect = Rect2($Corner.position, Vector2(64, 64))
+	draw_rect(rect, color)
 	if game.is_valid_endpoint(self):
 		draw_rect(rect, highlighted)
-	else:
-		draw_rect(rect, color)
 
 
 func can_accept_piece(piece):
