@@ -26,3 +26,7 @@ func _get_overlap():
 			return _get_overlap()
 	else:
 		return null
+
+
+func return_to_origin():
+	origin_zone.reset_piece_position(self)

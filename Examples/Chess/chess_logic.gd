@@ -22,6 +22,7 @@ var short_diag = MovePattern.new("/RU", MovePattern.ROTATE)
 var short_orthog = MovePattern.new("R", MovePattern.ROTATE)
 
 var move_possibilies = PoolVector2Array()
+var current_turn = WHITE
 
 
 func _get_possibilities(piece):
@@ -115,6 +116,10 @@ func _is_in_check(color):
 	return false
 
 
+func _next_turn():
+	current_turn = not current_turn
+
+
 func is_move_valid(piece, start, end):
 	if end:
 		var possible = _get_possibilities(piece)
@@ -127,15 +132,20 @@ func is_move_valid(piece, start, end):
 
 
 func move_piece(piece, to):
+	if to == piece.origin_zone:
+		piece.return_to_origin()
+		return
+	
 	.move_piece(piece, to)
-	if _is_in_check(WHITE):
-		emit_signal("king_checked", WHITE)
-	else:
-		emit_signal("king_not_checked", WHITE)
-	if _is_in_check(BLACK):
-		emit_signal("king_checked", BLACK)
-	else:
-		emit_signal("king_not_checked", BLACK)
+	_next_turn()
+	if _is_in_check(current_turn):
+		emit_signal("king_checked", current_turn)
+	if not _is_in_check(not current_turn):
+		emit_signal("king_not_checked", not current_turn)
+
+
+func can_focus(piece):
+	return piece.is_white == current_turn
 
 
 func focus_piece(piece):

@@ -34,6 +34,10 @@ func can_accept_piece(piece):
 	return piece.origin_zone == self
 
 
+func reset_piece_position(piece):
+	piece.position = position
+
+
 func piece_added(piece, location = null):
 	for p in pieces:
 		p.captured()

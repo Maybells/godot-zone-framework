@@ -15,6 +15,10 @@ func can_accept_piece(piece):
 	return true
 
 
+func reset_piece_position(piece):
+	pass
+
+
 func piece_added(piece, location = null):
 	piece.origin_zone = self
 	pieces.append(piece)

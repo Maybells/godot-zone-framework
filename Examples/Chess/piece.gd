@@ -62,7 +62,7 @@ func _load_icon():
 
 
 func _pick_up():
-	if not game.has_focus():
+	if not game.has_focus() and game.can_focus(self):
 		z_index += 1
 		game.focus_piece(self)
 		holding = true

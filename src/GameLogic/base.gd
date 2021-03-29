@@ -63,6 +63,10 @@ func just_unfocused():
 	return just_unfocused
 
 
+func can_focus(piece):
+	return true
+
+
 func focus_piece(piece):
 	focused_pieces.append(piece)
 	emit_signal("piece_focused")
