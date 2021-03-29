@@ -15,7 +15,7 @@ func _ready():
 	for point in $Grid.points:
 		var t = tile.instance()
 		t.id = index
-		t.game = game
+		game.register_zone(t)
 		t.position = $Grid.position + point
 		var rank = index % 8
 		var file = index / 8
@@ -36,7 +36,7 @@ func _process(delta):
 
 func _generate_piece_at(rank, file):
 	var p = piece.instance()
-	p.game = game
+	game.register_piece(p)
 	
 	if file <= 1:
 		p.is_white = false

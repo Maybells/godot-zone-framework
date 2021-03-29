@@ -26,7 +26,7 @@ func _draw():
 
 
 func can_accept_piece(piece):
-	return pieces.empty()
+	return pieces.empty() or piece.origin_zone == self
 
 
 func piece_added(piece, location = null):

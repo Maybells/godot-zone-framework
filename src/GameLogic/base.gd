@@ -5,8 +5,33 @@ signal piece_focused
 signal piece_unfocused
 
 
+var pieces = Array()
+var zones = Array()
+
 var focused_pieces = Array()
 var just_unfocused = false
+
+
+func register_piece(piece):
+	piece.game = self
+	pieces.append(piece)
+
+
+func register_zone(zone):
+	zone.game = self
+	zones.append(zone)
+
+
+func unregister_piece(piece):
+	if is_focused(piece):
+		unfocus_piece(piece)
+	piece.game = null
+	pieces.erase(piece)
+
+
+func unregister_zone(zone):
+	zone.game = null
+	zones.erase(zone)
 
 
 func tick():

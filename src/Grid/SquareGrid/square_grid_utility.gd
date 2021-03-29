@@ -101,7 +101,13 @@ func _generate_corner(position, distance):
 func is_position_valid(position):
 	var within_x = (position.x >= 0) and (position.x < dimensions.x)
 	var within_y = (position.y >= 0) and (position.y < dimensions.y)
-	return within_x and within_y
+	
+	var obstacle = _obstacle_at_position(position)
+	if obstacle:
+		if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
+			obstacle = false
+	
+	return within_x and within_y and not obstacle
 
 
 func get_all():
@@ -143,9 +149,11 @@ func get_pattern_results(position, pattern):
 			batch.append(mirror_y)
 			batch.append(mirror_xy)
 		MovePattern.ROTATE_MIRROR:
+			var mirror = _move_sequence_from_moves(pattern.moves.get_mirror_x())
+			batch.append(mirror)
 			for i in range(1, 4):
 				var rotate = _move_sequence_from_moves(pattern.moves.get_rotation(i))
-				var mirror = _move_sequence_from_moves(rotate.get_mirror_x())
+				mirror = _move_sequence_from_moves(rotate.get_mirror_x())
 				batch.append(rotate)
 				batch.append(mirror)
 	

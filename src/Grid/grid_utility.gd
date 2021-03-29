@@ -2,6 +2,7 @@ class_name GridUtility
 
 
 var dimensions
+var obstacles = Array()
 
 
 func _init(dimens):
@@ -28,14 +29,20 @@ func _calculate_move_sequence_results(position, moves, repeat):
 	while i <= repeat or repeat == -1:
 		var result = _move_sequence_results(last_pos, moves)
 		if result or result is Vector2:
-			results.append(result)
+			var obstacle = _obstacle_at_position(result)
+			if obstacle:
+				if obstacle.type == GridObstacle.STICKY:
+					results.append(result)
+					break
+				elif obstacle.type == GridObstacle.INVALID_END:
+					pass
+			else:
+				results.append(result)
 			last_pos = result
 		else:
 			break
 		i += 1
-	
-	if not results:
-		return false
+
 	return results
 
 
@@ -46,8 +53,6 @@ func _batch_move_results(position, batch, repeat):
 		if result:
 			results += result
 	
-	if not results:
-		return false
 	return results
 
 
@@ -59,6 +64,13 @@ func _move_sequence_from_moves(moves):
 
 func _distance_between_points(from, to):
 	return
+
+
+func _obstacle_at_position(position):
+	for obstacle in obstacles:
+		if obstacle.position == position:
+			return obstacle
+	return false
 
 
 func convert_index_to_position(index):
@@ -106,3 +118,15 @@ func get_in_bounds(position, bounds):
 
 func get_pattern_results(position, pattern):
 	return
+
+
+func add_obstacle(obstacle):
+	obstacles.append(obstacle)
+
+
+func clear_obstacles():
+	obstacles = Array()
+
+
+func remove_obstacle(obstacle):
+	obstacles.erase(obstacle)

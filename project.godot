@@ -15,6 +15,11 @@ _global_script_classes=[ {
 "path": "res://Examples/Chess/chess_logic.gd"
 }, {
 "base": "Reference",
+"class": "GridObstacle",
+"language": "GDScript",
+"path": "res://src/Grid/grid_obstacle.gd"
+}, {
+"base": "Reference",
 "class": "GridUtility",
 "language": "GDScript",
 "path": "res://src/Grid/grid_utility.gd"
@@ -41,6 +46,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "ChessLogic": "",
+"GridObstacle": "",
 "GridUtility": "",
 "MovePattern": "",
 "MoveSequence": "",

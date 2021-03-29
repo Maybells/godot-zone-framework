@@ -7,9 +7,15 @@ const LEFT = Vector2.LEFT
 const RIGHT = Vector2.RIGHT
 const UP = Vector2.UP
 const DOWN = Vector2.DOWN
+const DIAG_UR = UP + RIGHT
+const DIAG_DR = DOWN + RIGHT
+const DIAG_UL = UP + LEFT
+const DIAG_DL = DOWN + LEFT
 
 
 var _repeat
+var _diag
+var _buffer
 
 
 func _init(moves = "").(moves):
@@ -17,6 +23,7 @@ func _init(moves = "").(moves):
 
 
 func _sequence_from_string(string):
+	_clear_buffer()
 	_repeat = 0
 	string = string.to_upper()
 	var seq = PoolVector2Array()
@@ -24,8 +31,17 @@ func _sequence_from_string(string):
 		if ch.is_valid_integer():
 			_repeat *= 10
 			_repeat += int(ch)
+		elif ch == "/":
+			_diag = true
 		elif _repeat == 0:
-			seq.append(_direction_from_char(ch))
+			if _diag:
+				_buffer += ch
+				var dir = _direction_from_buffer()
+				if dir:
+					_clear_buffer()
+					seq.append(dir)
+			else:
+				seq.append(_direction_from_char(ch))
 		else:
 			for i in range(_repeat):
 				seq.append(_direction_from_char(ch))
@@ -43,6 +59,34 @@ func _direction_from_char(ch):
 			return UP
 		"D":
 			return DOWN
+
+
+func _direction_from_buffer():
+	if len(_buffer) == 2:
+		match _buffer:
+			"DL":
+				continue
+			"LD":
+				return DIAG_DL
+			"UL":
+				continue
+			"LU":
+				return DIAG_UL
+			"DR":
+				continue
+			"RD":
+				return DIAG_DR
+			"UR":
+				continue
+			"RU":
+				return DIAG_UR
+	elif len(_buffer) > 2:
+		_clear_buffer()
+
+
+func _clear_buffer():
+	_diag = false
+	_buffer = ""
 
 
 # Returns a sequence with all move A's replaced with B's and vice versa
@@ -70,6 +114,14 @@ func _rotate_clockwise(moves = sequence):
 			replacement.append(RIGHT)
 		elif move == DOWN:
 			replacement.append(LEFT)
+		elif move == DIAG_DL:
+			replacement.append(DIAG_UL)
+		elif move == DIAG_DR:
+			replacement.append(DIAG_DL)
+		elif move == DIAG_UL:
+			replacement.append(DIAG_UR)
+		elif move == DIAG_UR:
+			replacement.append(DIAG_DR)
 	return replacement
 
 
