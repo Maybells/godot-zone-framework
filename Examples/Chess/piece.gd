@@ -11,8 +11,8 @@ const PIECE_MAP = {
 }
 
 
-export (Color) var white = Color.white
-export (Color) var black = Color.black
+var white = Color.white
+var black = Color.black
 
 
 var is_white = true
@@ -29,6 +29,9 @@ func _ready():
 	
 	$ClickArea.connect("input_event", self, "_on_input_event")
 	_load_icon()
+	if type == ChessLogic.KING:
+		game.connect("king_checked", self, "_king_checked")
+		game.connect("king_not_checked", self, "_king_not_checked")
 
 
 func _process(delta):
@@ -78,6 +81,17 @@ func _put_down():
 #		holding = false
 #		if origin_zone:
 #			game.move_piece(self, origin_zone)
+
+
+func _king_checked(color):
+	if color == is_white:
+		$Sprite.material = load("res://Examples/Chess/Materials/outline.tres")
+
+
+func _king_not_checked(color):
+	if color == is_white:
+		$Sprite.material = null
+
 
 func captured():
 	captured = true

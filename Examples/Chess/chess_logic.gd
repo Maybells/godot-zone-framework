@@ -4,6 +4,12 @@ class_name ChessLogic
 
 
 enum {QUEEN, KING, PAWN, KNIGHT, ROOK, BISHOP}
+const WHITE = true
+const BLACK = false
+
+
+signal king_checked(color)
+signal king_not_checked(color)
 
 
 var grid = SquareGridUtility.new(Vector2(8, 8))
@@ -94,6 +100,21 @@ func _is_pawn_diagonal(position, piece):
 		return position == location + SquareMoveSequence.DIAG_DL or position == location + SquareMoveSequence.DIAG_DR
 
 
+func _is_in_check(color):
+	var king_position
+	
+	for p in pieces:
+		if p.is_white == color and p.type == KING:
+			king_position = _position_of_zone(p.origin_zone)
+	
+	for p in pieces:
+		if p.is_white != color:
+			var attack = _get_possibilities(p)
+			if king_position in attack:
+				return true
+	return false
+
+
 func is_move_valid(piece, start, end):
 	if end:
 		var possible = _get_possibilities(piece)
@@ -107,6 +128,14 @@ func is_move_valid(piece, start, end):
 
 func move_piece(piece, to):
 	.move_piece(piece, to)
+	if _is_in_check(WHITE):
+		emit_signal("king_checked", WHITE)
+	else:
+		emit_signal("king_not_checked", WHITE)
+	if _is_in_check(BLACK):
+		emit_signal("king_checked", BLACK)
+	else:
+		emit_signal("king_not_checked", BLACK)
 
 
 func focus_piece(piece):

@@ -7,25 +7,15 @@
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 24, 24 )
 
-[node name="Piece" instance=ExtResource( 1 )]
+[node name="Piece" index="0" instance=ExtResource( 1 )]
 z_index = 1
 script = ExtResource( 2 )
 
-[node name="ColorRect" type="ColorRect" parent="." index="0"]
-visible = false
-margin_left = -24.0
-margin_top = -24.0
-margin_right = 24.0
-margin_bottom = 24.0
-mouse_filter = 2
-mouse_default_cursor_shape = 6
-color = Color( 0, 0, 0, 1 )
-
-[node name="ClickArea" type="Area2D" parent="." index="2"]
+[node name="ClickArea" type="Area2D" parent="." index="1"]
 
 [node name="ClickShape" type="CollisionShape2D" parent="ClickArea" index="0"]
 shape = SubResource( 1 )
 
-[node name="Sprite" type="Sprite" parent="." index="3"]
+[node name="Sprite" type="Sprite" parent="." index="2"]
 scale = Vector2( 0.9, 0.9 )
 texture = ExtResource( 3 )
