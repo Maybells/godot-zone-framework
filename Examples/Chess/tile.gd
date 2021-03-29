@@ -1,8 +1,8 @@
 extends "res://src/Zone/zone.gd"
 
-export (Color) var white = Color.beige
-export (Color) var black = Color.burlywood
-export (Color) var highlighted = Color.aliceblue
+var white = Color(111/255.0, 143/255.0, 114/255.0)
+var black = Color(173/255.0, 189/255.0, 143/255.0)
+var highlighted = Color.darkgreen
 var is_white = true
 var color
 

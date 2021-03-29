@@ -15,19 +15,19 @@ script = ExtResource( 1 )
 margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
-color = Color( 0.0901961, 0.396078, 0.447059, 1 )
+color = Color( 0.027451, 0.176471, 0.203922, 1 )
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
-position = Vector2( 512, 300 )
+position = Vector2( 650, 300 )
 columns = 8
 rows = 8
 cell_size = Vector2( 64, 64 )
 cell_margin = Vector2( 0, 0 )
 
 [node name="Label" type="Label" parent="."]
-margin_left = 16.0
-margin_top = 16.0
-margin_right = 240.0
-margin_bottom = 59.0
+margin_left = 90.0
+margin_top = 250.0
+margin_right = 314.0
+margin_bottom = 293.0
 custom_fonts/font = SubResource( 1 )
 text = "White's Turn"
