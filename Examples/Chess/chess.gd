@@ -63,5 +63,5 @@ func _game_ended(winner):
 	if winner == ChessLogic.WHITE:
 		$Label.text = "White Wins!"
 	else:
-		$Label.text = "Black Win!"
+		$Label.text = "Black Wins!"
 
