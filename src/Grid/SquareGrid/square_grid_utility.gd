@@ -68,13 +68,13 @@ func is_position_valid(position):
 
 
 func get_all():
-	return get_in_rect(Vector2(0, 0), Vector2(bounds.x, bounds.y))
+	return get_in_dimens(Vector2(0, 0), Vector2(bounds.x, bounds.y))
 
 
-func get_in_rect(position, rect):
+func get_in_dimens(position, dimens):
 	var results = PoolVector2Array()
-	for i in range(rect.y):
-		for j in range(rect.x):
+	for i in range(dimens.y):
+		for j in range(dimens.x):
 			var point = position + Vector2(j, i)
 			if is_position_valid(point):
 				results.append(point)

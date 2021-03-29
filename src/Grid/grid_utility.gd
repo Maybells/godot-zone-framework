@@ -112,7 +112,7 @@ func get_all():
 	return
 
 
-func get_in_bounds(position, bounds):
+func get_in_dimens(position, dimens):
 	return
 
 
