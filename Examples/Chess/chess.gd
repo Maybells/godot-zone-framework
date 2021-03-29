@@ -29,6 +29,7 @@ func _ready():
 		
 		index += 1
 	game.connect("turn_changed", self, "_turn_changed")
+	game.connect("game_ended", self, "_game_ended")
 
 
 func _process(delta):
@@ -58,4 +59,9 @@ func _turn_changed(to):
 	else:
 		$Label.text = "Black's Turn"
 
+func _game_ended(winner):
+	if winner == ChessLogic.WHITE:
+		$Label.text = "White Wins!"
+	else:
+		$Label.text = "Black Win!"
 

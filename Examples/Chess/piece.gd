@@ -95,6 +95,9 @@ func _king_not_checked(color):
 
 
 func captured():
+	if type == ChessLogic.KING:
+		game.end_game()
+	
 	captured = true
 	game.unregister_piece(self)
 	origin_zone.piece_removed(self)

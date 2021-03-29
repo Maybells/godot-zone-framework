@@ -9,6 +9,7 @@ const BLACK = false
 
 
 signal turn_changed(current_turn)
+signal game_ended(winner)
 signal king_checked(color)
 signal king_not_checked(color)
 
@@ -24,6 +25,7 @@ var short_orthog = MovePattern.new("R", MovePattern.ROTATE)
 
 var move_possibilies = PoolVector2Array()
 var current_turn = WHITE
+var game_ongoing = true
 
 
 func _get_possibilities(piece):
@@ -123,7 +125,7 @@ func _is_in_check(color):
 			king_position = _position_of_zone(p.origin_zone)
 	
 	for p in pieces:
-		if p.is_white != color:
+		if p.is_white != color and king_position:
 			var attack = _get_possibilities(p)
 			if king_position in attack:
 				return true
@@ -131,8 +133,9 @@ func _is_in_check(color):
 
 
 func _next_turn():
-	current_turn = not current_turn
-	emit_signal("turn_changed", current_turn)
+	if game_ongoing:
+		current_turn = not current_turn
+		emit_signal("turn_changed", current_turn)
 
 
 func is_move_valid(piece, start, end):
@@ -160,7 +163,7 @@ func move_piece(piece, to):
 
 
 func can_focus(piece):
-	return piece.is_white == current_turn
+	return piece.is_white == current_turn and game_ongoing
 
 
 func focus_piece(piece):
@@ -177,5 +180,7 @@ func is_valid_endpoint(zone):
 	var position = _position_of_zone(zone)
 	return position in move_possibilies
 
-
+func end_game():
+	game_ongoing = false
+	emit_signal("game_ended", current_turn)
 
