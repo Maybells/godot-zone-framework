@@ -1,12 +1,12 @@
 class_name GridUtility
 
 
-var dimensions
+var bounds
 var obstacles = Array()
 
 
-func _init(dimens):
-	dimensions = dimens
+func _init(bounds):
+	self.bounds = bounds
 
 
 func _move_sequence_results(position, moves):

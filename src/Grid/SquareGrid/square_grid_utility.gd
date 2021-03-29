@@ -11,7 +11,7 @@ enum {ORTHOGONAL, OCTILINEAR}
 var adjacency_mode
 
 
-func _init(dimens, adjacency = ORTHOGONAL).(dimens):
+func _init(dimens, adjacency = ORTHOGONAL).(SquareGridBounds.new(dimens)):
 	adjacency_mode = adjacency
 
 
@@ -32,26 +32,14 @@ func _distance_between_points(from, to):
 
 # Example: 3 in 2x2 grid -> (1, 1)
 func convert_index_to_position(index):
-	var x = index % int(dimensions.y)
-	var y = index / int(dimensions.y)
+	var x = index % int(bounds.y)
+	var y = index / int(bounds.y)
 	return Vector2(x, y)
 
 
 # Example: (1, 1) in 2x2 grid -> 3
 func convert_position_to_index(position):
-	return position.x + (position.y * dimensions.y)
-
-
-func is_edge(position):
-	var horiz_edge = (position.x == 0) or (position.x == dimensions.x - 1)
-	var vert_edge = (position.y == 0) or (position.y == dimensions.y - 1)
-	return horiz_edge or vert_edge
-
-
-func is_corner(position):
-	var horiz_edge = (position.x == 0) or (position.x == dimensions.x - 1)
-	var vert_edge = (position.y == 0) or (position.y == dimensions.y - 1)
-	return horiz_edge and vert_edge
+	return position.x + (bounds.y * bounds.y)
 
 
 func get_distance_range(position, lower, upper):
@@ -69,55 +57,24 @@ func get_distance_range(position, lower, upper):
 	return results
 
 
-func _generate_arc(position, distance):
-	var arc = PoolVector2Array()
-	for i in range(1, distance + 1):
-		var sequence = str(i) + "U"
-		if distance - i > 0:
-			sequence +=  str(distance - i) + "R"
-		var pattern = MovePattern.new(sequence, MovePattern.ROTATE)
-		var results = get_pattern_results(position, pattern)
-		arc += results
-	return arc
-
-
-func _generate_corner(position, distance):
-	var corner = PoolVector2Array()
-	for i in range(0, distance * 2):
-		var sequence
-		if i <= distance:
-			sequence = str(distance) + "U"
-			if i > 0:
-				sequence +=  str(i) + "R"
-		else:
-			sequence = str(i - distance) + "U"
-			sequence +=  str(distance) + "R"
-		var pattern = MovePattern.new(sequence, MovePattern.ROTATE)
-		var results = get_pattern_results(position, pattern)
-		corner += results
-	return corner
-
-
 func is_position_valid(position):
-	var within_x = (position.x >= 0) and (position.x < dimensions.x)
-	var within_y = (position.y >= 0) and (position.y < dimensions.y)
-	
-	var obstacle = _obstacle_at_position(position)
-	if obstacle:
-		if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
-			obstacle = false
-	
-	return within_x and within_y and not obstacle
+	if bounds.position_in_bounds(position):
+		var obstacle = _obstacle_at_position(position)
+		if obstacle:
+			if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
+				obstacle = false
+		return not obstacle
+	return false
 
 
 func get_all():
-	return get_in_bounds(Vector2(0, 0), Vector2(dimensions.x, dimensions.y))
+	return get_in_rect(Vector2(0, 0), Vector2(bounds.x, bounds.y))
 
 
-func get_in_bounds(position, bounds):
+func get_in_rect(position, rect):
 	var results = PoolVector2Array()
-	for i in range(bounds.y):
-		for j in range(bounds.x):
+	for i in range(rect.y):
+		for j in range(rect.x):
 			var point = position + Vector2(j, i)
 			if is_position_valid(point):
 				results.append(point)
