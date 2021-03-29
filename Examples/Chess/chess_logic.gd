@@ -36,10 +36,20 @@ func _get_possibilities(piece):
 			
 			if piece.is_white:
 				pawn = pawn_up
-				pawn_diag = MovePattern.new("/RU", MovePattern.MIRROR_X)
+				if piece.pawn_diag_left and piece.pawn_diag_right:
+					pawn_diag = MovePattern.new("/RU", MovePattern.MIRROR_X)
+				elif piece.pawn_diag_left:
+					pawn_diag = MovePattern.new("/LU")
+				elif piece.pawn_diag_right:
+					pawn_diag = MovePattern.new("/RU")
 			else:
 				pawn = pawn_down
-				pawn_diag = MovePattern.new("/RD", MovePattern.MIRROR_X)
+				if piece.pawn_diag_left and piece.pawn_diag_right:
+					pawn_diag = MovePattern.new("/RD", MovePattern.MIRROR_X)
+				elif piece.pawn_diag_left:
+					pawn_diag = MovePattern.new("/LD")
+				elif piece.pawn_diag_right:
+					pawn_diag = MovePattern.new("/RD")
 			
 			if piece.first_move:
 				pawn.repeat = 1
@@ -47,7 +57,7 @@ func _get_possibilities(piece):
 				pawn.repeat = 0
 			
 			possibilities += grid.get_pattern_results(position, pawn)
-			if piece.pawn_diag:
+			if piece.pawn_diag_left or piece.pawn_diag_right:
 				possibilities += grid.get_pattern_results(position, pawn_diag)
 		KNIGHT:
 			possibilities += grid.get_pattern_results(position, knight)
@@ -65,7 +75,8 @@ func _get_possibilities(piece):
 
 func _generate_obstacles(piece):
 	grid.clear_obstacles()
-	piece.pawn_diag = false
+	piece.pawn_diag_left = false
+	piece.pawn_diag_right = false
 	
 	for p in pieces:
 		if p.is_white == piece.is_white:
@@ -83,8 +94,10 @@ func _generate_obstacles(piece):
 			if piece.type == PAWN:
 				if not _is_pawn_diagonal(obstacle.position, piece):
 					obstacle.type = GridObstacle.IMPASSABLE
-				else:
-					piece.pawn_diag = true
+				elif obstacle.position.x > _position_of_zone(piece.origin_zone).x:
+					piece.pawn_diag_right = true
+				elif obstacle.position.x < _position_of_zone(piece.origin_zone).x:
+					piece.pawn_diag_left = true
 			
 			grid.add_obstacle(obstacle)
 

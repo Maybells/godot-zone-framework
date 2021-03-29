@@ -20,7 +20,8 @@ var type
 var color
 var holding = false
 var first_move = true
-var pawn_diag = false
+var pawn_diag_left = false
+var pawn_diag_right = false
 var captured = false
 
 
