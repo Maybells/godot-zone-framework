@@ -105,37 +105,46 @@ func _generate_flat_rectangular():
 
 
 func _generate_hexagonal():
-	var a
-	var b
-	var horiz
-	if height > width or (height == width and type == variant.FLAT):
-		a = height
-		b = width
-		horiz = false
-	else:
-		a = width
-		b = height
-		horiz = true
+	if type == variant.POINTY:
+		_generate_pointy_hexagonal()
+	elif type == variant.FLAT:
+		_generate_flat_hexagonal()
+
+
+func _generate_pointy_hexagonal():
+	var rows = (2 * height) - 1
+	var columns = (2 * width) - 1
 	
-	var short = (2 * b) - 1
-	var long = (2 * a) - 1
-	
-	for i in range(short):
-		var r = (-short / 2) + i
-		var l = long - abs(r)
+	for i in range(rows):
+		var r = (-rows / 2) + i
+		var l = columns - abs(r)
 		
 		for j in range(l):
 			var q
-			if i < b:
-				q = a - l + j
+			if i < height:
+				q = width - l + j
 			else:
-				q = (-long / 2) + j
+				q = (-columns / 2) + j
 			
-			if horiz:
-				points.append(Vector2(q, r))
+			points.append(Vector2(q, r))
+
+
+func _generate_flat_hexagonal():
+	var rows = (2 * height) - 1
+	var columns = (2 * width) - 1
+	
+	for i in range(columns):
+		var r = (-columns / 2) + i
+		var l = rows - abs(r)
+		
+		for j in range(l):
+			var q
+			if i < width:
+				q = height - l + j
 			else:
-				points.append(Vector2(r, q))
-	return points
+				q = (-rows / 2) + j
+			
+			points.append(Vector2(r, q))
 
 
 func cell_margin_set(value):
@@ -149,12 +158,18 @@ func type_set(value):
 
 
 func width_set(value):
-	width = value
+	if not rectangular and type == variant.FLAT:
+		width = min(value, height * 2 - 1)
+	else:
+		width = value
 	_generate_grid()
 
 
 func height_set(value):
-	height = value
+	if not rectangular and type == variant.POINTY:
+		height = min(value, width * 2 - 1)
+	else:
+		height = value
 	_generate_grid()
 
 
