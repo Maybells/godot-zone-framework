@@ -63,6 +63,48 @@ func _hex_to_position(hex):
 
 
 func _generate_grid():
+	points = PoolVector2Array()
+	if rectangular:
+		_generate_rectangular()
+	else:
+		_generate_hexagonal()
+	
+	update()
+
+
+func cell_size_set(value):
+	cell_size = value
+	_generate_grid()
+
+
+func _generate_rectangular():
+	if type == variant.POINTY:
+		_generate_pointy_rectangular()
+	elif type == variant.FLAT:
+		_generate_flat_rectangular()
+
+
+func _generate_pointy_rectangular():
+	for i in range(height):
+		var r = (-height / 2) + i
+		var l = width
+		
+		for j in range(l):
+			var q = (-width / 2) + j - (i / 2) + 0 + (height / 4)
+			points.append(Vector2(q, r))
+
+
+func _generate_flat_rectangular():
+	for i in range(width):
+		var r = (-width / 2) + i
+		var l = height
+		
+		for j in range(l):
+			var q = (-height / 2) + j - (i / 2) + (width / 4)
+			points.append(Vector2(r, q))
+
+
+func _generate_hexagonal():
 	var a
 	var b
 	var horiz
@@ -77,36 +119,23 @@ func _generate_grid():
 	
 	var short = (2 * b) - 1
 	var long = (2 * a) - 1
-	points = PoolVector2Array()
 	
 	for i in range(short):
 		var r = (-short / 2) + i
 		var l = long - abs(r)
-		if rectangular:
-			l = long
 		
 		for j in range(l):
 			var q
-			
-			if rectangular:
-				q = (-long / 2) + j - (i / 2) + 1
+			if i < b:
+				q = a - l + j
 			else:
-				if i < b:
-					q = a - l + j
-				else:
-					q = (-long / 2) + j
+				q = (-long / 2) + j
 			
 			if horiz:
 				points.append(Vector2(q, r))
 			else:
 				points.append(Vector2(r, q))
-	
-	update()
-
-
-func cell_size_set(value):
-	cell_size = value
-	_generate_grid()
+	return points
 
 
 func cell_margin_set(value):

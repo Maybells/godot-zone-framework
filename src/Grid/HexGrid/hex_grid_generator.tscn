@@ -4,4 +4,5 @@
 
 [node name="HexGridGenerator" type="Node2D"]
 script = ExtResource( 1 )
+type = 1
 cell_size = 64
