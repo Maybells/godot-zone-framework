@@ -2,15 +2,13 @@ tool
 extends Node2D
 
 
-enum variant {FLAT, POINTY}
-
-
-export (variant) var type setget type_set
-export (bool) var rectangular = false setget rectangular_set
+export (int, "Pointy", "Flat") var type setget type_set
+export (int, "Hexagonal", "Rectangular") var shape = false setget shape_set
 export (int, 1, 1000000) var width = 3 setget width_set
 export (int, 1, 1000000) var height = 3 setget height_set
 export (int, 1, 1000000) var cell_size = 16 setget cell_size_set
 export (int) var cell_margin = 2 setget cell_margin_set
+var bounds = HexGridBounds.new(Vector2())
 var points = PoolVector2Array()
 var colors = PoolColorArray([Color.white])
 
@@ -31,9 +29,9 @@ func _hex(position):
 	var shape = PoolVector2Array()
 	for i in range(6):
 		var angle_deg
-		if type == variant.FLAT:
+		if type == HexGridBounds.FLAT:
 			angle_deg = 60 * i
-		elif type == variant.POINTY:
+		elif type == HexGridBounds.POINTY:
 			angle_deg = 60 * i - 30
 		var angle_rad = PI / 180 * angle_deg
 		var point = Vector2(position.x + cell_size * cos(angle_rad), position.y + cell_size * sin(angle_rad))
@@ -48,19 +46,21 @@ func _index_to_hex(index):
 func _hex_to_position(hex):
 	var q = hex.x
 	var r = hex.y
-	if type == variant.FLAT:
+	if type == HexGridBounds.FLAT:
 		var x = (cell_size + cell_margin) * (1.5 * q)
 		var y = (cell_size + cell_margin) * (sqrt(3) * r + sqrt(3)/2.0 * q)
 		return Vector2(x, y)
-	elif type == variant.POINTY:
+	elif type == HexGridBounds.POINTY:
 		var x = (cell_size + cell_margin) * (sqrt(3) * q + sqrt(3)/2.0 * r)
 		var y = (cell_size + cell_margin) * (1.5 * r)
 		return Vector2(x, y)
 
 
 func _generate_grid():
+	bounds = HexGridBounds.new(Vector2(width, height), type, shape)
+	
 	points = PoolVector2Array()
-	if rectangular:
+	if bounds.shape == HexGridBounds.RECTANGULAR:
 		_generate_rectangular()
 	else:
 		_generate_hexagonal()
@@ -74,9 +74,9 @@ func cell_size_set(value):
 
 
 func _generate_rectangular():
-	if type == variant.POINTY:
+	if bounds.mode == HexGridBounds.POINTY:
 		_generate_pointy_rectangular()
-	elif type == variant.FLAT:
+	elif bounds.mode == HexGridBounds.FLAT:
 		_generate_flat_rectangular()
 
 
@@ -101,9 +101,9 @@ func _generate_flat_rectangular():
 
 
 func _generate_hexagonal():
-	if type == variant.POINTY:
+	if bounds.mode == HexGridBounds.POINTY:
 		_generate_pointy_hexagonal()
-	elif type == variant.FLAT:
+	elif bounds.mode == HexGridBounds.FLAT:
 		_generate_flat_hexagonal()
 
 
@@ -144,20 +144,7 @@ func _generate_flat_hexagonal():
 
 
 func get_bounds():
-	var mode
-	var shape
-	
-	if rectangular:
-		shape = HexGridBounds.RECTANGULAR
-	else:
-		shape = HexGridBounds.HEXAGONAL
-	
-	if type == variant.POINTY:
-		mode = HexGridBounds.POINTY
-	if type == variant.FLAT:
-		mode = HexGridBounds.FLAT
-	
-	return HexGridBounds.new(Vector2(width, height), mode, shape)
+	return bounds
 
 
 func cell_margin_set(value):
@@ -171,7 +158,7 @@ func type_set(value):
 
 
 func width_set(value):
-	if not rectangular and type == variant.FLAT:
+	if shape == HexGridBounds.HEXAGONAL and type == HexGridBounds.FLAT:
 		width = min(value, height * 2 - 1)
 	else:
 		width = value
@@ -179,13 +166,13 @@ func width_set(value):
 
 
 func height_set(value):
-	if not rectangular and type == variant.POINTY:
+	if shape == HexGridBounds.HEXAGONAL and type == HexGridBounds.POINTY:
 		height = min(value, width * 2 - 1)
 	else:
 		height = value
 	_generate_grid()
 
 
-func rectangular_set(value):
-	rectangular = value
+func shape_set(value):
+	shape = value
 	_generate_grid()
