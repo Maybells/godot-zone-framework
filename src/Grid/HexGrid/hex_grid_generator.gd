@@ -15,10 +15,6 @@ var points = PoolVector2Array()
 var colors = PoolColorArray([Color.white])
 
 
-func _ready():
-	pass
-
-
 func _draw():
 	if Engine.editor_hint:
 		var label = Label.new()
@@ -145,6 +141,23 @@ func _generate_flat_hexagonal():
 				q = (-rows / 2) + j
 			
 			points.append(Vector2(r, q))
+
+
+func get_bounds():
+	var mode
+	var shape
+	
+	if rectangular:
+		shape = HexGridBounds.RECTANGULAR
+	else:
+		shape = HexGridBounds.HEXAGONAL
+	
+	if type == variant.POINTY:
+		mode = HexGridBounds.POINTY
+	if type == variant.FLAT:
+		mode = HexGridBounds.FLAT
+	
+	return HexGridBounds.new(Vector2(width, height), mode, shape)
 
 
 func cell_margin_set(value):

@@ -29,6 +29,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Grid/grid_utility.gd"
 }, {
+"base": "GridBounds",
+"class": "HexGridBounds",
+"language": "GDScript",
+"path": "res://src/Grid/HexGrid/hex_grid_bounds.gd"
+}, {
+"base": "GridUtility",
+"class": "HexGridUtility",
+"language": "GDScript",
+"path": "res://src/Grid/HexGrid/hex_grid_utility.gd"
+}, {
 "base": "Reference",
 "class": "MovePattern",
 "language": "GDScript",
@@ -59,6 +69,8 @@ _global_script_class_icons={
 "GridBounds": "",
 "GridObstacle": "",
 "GridUtility": "",
+"HexGridBounds": "",
+"HexGridUtility": "",
 "MovePattern": "",
 "MoveSequence": "",
 "SquareGridBounds": "",
