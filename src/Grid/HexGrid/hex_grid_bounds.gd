@@ -43,7 +43,7 @@ func _in_flat_hexagonal(r, q):
 	else:
 		start = -height + 1 - dist_from_axis
 		end = height - 1
-	return r >= start and r <= end
+	return q >= start and q <= end
 
 
 func _in_pointy_rectangular(r, q):
@@ -84,7 +84,7 @@ func _in_flat_rectangular(r, q):
 	return (r >= start_x and r <= end_x) and (q >= start_y and q <= end_y)
 
 
-func position_in_bounds(position):
+func is_in_bounds(position):
 	var r = position.x
 	var q = position.y
 	if shape == HEXAGONAL:

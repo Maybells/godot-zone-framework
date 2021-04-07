@@ -19,7 +19,7 @@ func _y_get():
 	return dimensions.y
 
 
-func position_in_bounds(position):
+func is_in_bounds(position):
 	var within_x = (position.x >= 0) and (position.x < dimensions.x)
 	var within_y = (position.y >= 0) and (position.y < dimensions.y)
 	return within_x and within_y

@@ -8,5 +8,5 @@ func _init(dimensions):
 	self.dimensions = dimensions
 
 
-func position_in_bounds(position):
+func is_in_bounds(position):
 	return
