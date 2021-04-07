@@ -1,6 +1,6 @@
-extends GridUtility
+extends Grid
 
-class_name HexGridUtility
+class_name HexGrid
 
 
 func _init(dimens).(HexGridBounds.new(dimens)):
@@ -40,16 +40,6 @@ func get_distance_range(position, lower, upper):
 #					results.append(point)
 #	return results
 	pass
-
-
-func is_position_valid(position):
-	if bounds.position_in_bounds(position):
-		var obstacle = _obstacle_at_position(position)
-		if obstacle:
-			if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
-				obstacle = false
-		return not obstacle
-	return false
 
 
 func get_all():

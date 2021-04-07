@@ -1,6 +1,6 @@
-extends GridUtility
+extends Grid
 
-class_name SquareGridUtility
+class_name SquareGrid
 
 
 # ORTHOGONAL means only left, right, up, and down are counted as adjacent
@@ -55,16 +55,6 @@ func get_distance_range(position, lower, upper):
 				if dist >= lower and dist <= upper:
 					results.append(point)
 	return results
-
-
-func is_position_valid(position):
-	if bounds.position_in_bounds(position):
-		var obstacle = _obstacle_at_position(position)
-		if obstacle:
-			if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
-				obstacle = false
-		return not obstacle
-	return false
 
 
 func get_all():

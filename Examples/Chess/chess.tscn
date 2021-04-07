@@ -16,6 +16,9 @@ margin_right = 1024.0
 margin_bottom = 600.0
 mouse_filter = 2
 color = Color( 0.027451, 0.176471, 0.203922, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
 [node name="Grid" parent="." instance=ExtResource( 2 )]
 position = Vector2( 650, 300 )

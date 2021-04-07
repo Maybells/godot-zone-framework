@@ -14,7 +14,7 @@ signal king_checked(color)
 signal king_not_checked(color)
 
 
-var grid = SquareGridUtility.new(Vector2(8, 8))
+var grid = SquareGrid.new(Vector2(8, 8))
 var pawn_up = MovePattern.new("U")
 var pawn_down = MovePattern.new("D")
 var bishop = MovePattern.new("/RU", MovePattern.ROTATE, -1)

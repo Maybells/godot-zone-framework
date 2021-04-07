@@ -1,4 +1,4 @@
-class_name GridUtility
+class_name Grid
 
 
 var bounds
@@ -69,6 +69,16 @@ func _obstacle_at_position(position):
 	return false
 
 
+func is_position_valid(position):
+	if bounds.is_in_bounds(position):
+		var obstacle = _obstacle_at_position(position)
+		if obstacle:
+			if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
+				obstacle = false
+		return not obstacle
+	return false
+
+
 func convert_index_to_position(index):
 	return
 
@@ -97,10 +107,6 @@ func get_distance_range(position, lower, upper):
 
 func get_within_distance(position, distance):
 	return get_distance_range(position, 0, distance)
-
-
-func is_position_valid(position):
-	return false
 
 
 func is_direction_valid(position, direction):
