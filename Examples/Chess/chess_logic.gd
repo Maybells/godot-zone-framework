@@ -1,4 +1,4 @@
-extends "res://src/GameLogic/base.gd"
+extends GameLogic
 
 class_name ChessLogic
 

@@ -1,4 +1,4 @@
-extends "res://src/Piece/piece.gd"
+extends Piece
 
 
 const PIECE_MAP = {

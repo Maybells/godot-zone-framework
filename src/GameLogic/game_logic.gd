@@ -1,3 +1,6 @@
+class_name GameLogic
+
+
 signal game_reset
 signal game_initialized
 signal piece_moved(piece, to)
@@ -40,7 +43,7 @@ func tick():
 
 # Returns true if the game logic allows piece to go from start to end
 func is_move_valid(piece, start, end):
-	return false
+	return (end != null) and (end.can_accept_piece(piece))
 
 
 # Moves piece to the given zone

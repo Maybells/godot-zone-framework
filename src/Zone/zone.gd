@@ -1,5 +1,7 @@
 extends Area2D
 
+class_name Zone
+
 
 var id
 var game

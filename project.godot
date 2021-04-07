@@ -9,10 +9,15 @@
 config_version=4
 
 _global_script_classes=[ {
-"base": "Reference",
+"base": "GameLogic",
 "class": "ChessLogic",
 "language": "GDScript",
 "path": "res://Examples/Chess/chess_logic.gd"
+}, {
+"base": "Reference",
+"class": "GameLogic",
+"language": "GDScript",
+"path": "res://src/GameLogic/game_logic.gd"
 }, {
 "base": "Reference",
 "class": "Grid",
@@ -39,6 +44,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Grid/HexGrid/hex_grid_bounds.gd"
 }, {
+"base": "GameLogic",
+"class": "InventoryLogic",
+"language": "GDScript",
+"path": "res://Examples/RPG Inventory/inventory_logic.gd"
+}, {
 "base": "Reference",
 "class": "MovePattern",
 "language": "GDScript",
@@ -48,6 +58,11 @@ _global_script_classes=[ {
 "class": "MoveSequence",
 "language": "GDScript",
 "path": "res://src/Grid/move_sequence.gd"
+}, {
+"base": "Node2D",
+"class": "Piece",
+"language": "GDScript",
+"path": "res://src/Piece/piece.gd"
 }, {
 "base": "Grid",
 "class": "SquareGrid",
@@ -63,25 +78,34 @@ _global_script_classes=[ {
 "class": "SquareMoveSequence",
 "language": "GDScript",
 "path": "res://src/Grid/SquareGrid/square_move_sequence.gd"
+}, {
+"base": "Area2D",
+"class": "Zone",
+"language": "GDScript",
+"path": "res://src/Zone/zone.gd"
 } ]
 _global_script_class_icons={
 "ChessLogic": "",
+"GameLogic": "",
 "Grid": "",
 "GridBounds": "",
 "GridObstacle": "",
 "HexGrid": "",
 "HexGridBounds": "",
+"InventoryLogic": "",
 "MovePattern": "",
 "MoveSequence": "",
+"Piece": "",
 "SquareGrid": "",
 "SquareGridBounds": "",
-"SquareMoveSequence": ""
+"SquareMoveSequence": "",
+"Zone": ""
 }
 
 [application]
 
-config/name="LogicZone Framework"
-run/main_scene="res://Examples/Chess/chess.tscn"
+config/name="Godot Zone Framework"
+run/main_scene="res://Examples/RPG Inventory/inventory.tscn"
 config/icon="res://icon.png"
 
 [rendering]

@@ -1,4 +1,4 @@
-extends "res://src/Zone/zone.gd"
+extends Zone
 
 var white = Color(111/255.0, 143/255.0, 114/255.0)
 var black = Color(173/255.0, 189/255.0, 143/255.0)
