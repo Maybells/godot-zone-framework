@@ -8,9 +8,10 @@ export (int, 1, 1000000) var width = 3 setget width_set
 export (int, 1, 1000000) var height = 3 setget height_set
 export (int, 1, 1000000) var cell_size = 16 setget cell_size_set
 export (int) var cell_margin = 2 setget cell_margin_set
+export (Color) var color = Color.white setget color_set
 var bounds = HexGridBounds.new(Vector2())
 var points = PoolVector2Array()
-var colors = PoolColorArray([Color.white])
+var colors = PoolColorArray([color])
 
 
 func _draw():
@@ -176,3 +177,9 @@ func height_set(value):
 func shape_set(value):
 	shape = value
 	_generate_grid()
+
+
+func color_set(value):
+	color = value
+	colors = PoolColorArray([color])
+	update()
