@@ -1,5 +1,7 @@
 # Godot Zone Framework
 
+WARNING: This framework is still in development and changing rapidly. Feel free to experiment, but don't import it into big projects just yet.
+
 ![Chess](/Examples/Chess/Screenshots/opening.gif)
 
 ### A framework for creating puzzle games, digital board games, RPGs, and more.
