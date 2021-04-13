@@ -30,6 +30,7 @@ columns = 6
 rows = 6
 cell_size = Vector2( 68, 68 )
 cell_margin = Vector2( 8, 8 )
+color = Color( 1, 1, 1, 1 )
 
 [node name="LeftArm" parent="." instance=ExtResource( 3 )]
 position = Vector2( 115, 330 )
