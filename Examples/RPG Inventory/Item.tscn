@@ -1,20 +1,18 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://src/Piece/piece.tscn" type="PackedScene" id=1]
-[ext_resource path="res://Examples/RPG Inventory/Images/arm_1.png" type="Texture" id=2]
-[ext_resource path="res://Examples/RPG Inventory/item.gd" type="Script" id=3]
+[ext_resource path="res://src/Piece/2d/DragPiece2D/drag_piece.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Examples/RPG Inventory/item.gd" type="Script" id=2]
+[ext_resource path="res://Examples/RPG Inventory/Images/arm_1.png" type="Texture" id=3]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 32, 32 )
 
 [node name="Item" instance=ExtResource( 1 )]
 z_index = 1
-script = ExtResource( 3 )
+script = ExtResource( 2 )
 
-[node name="ClickArea" type="Area2D" parent="." index="1"]
-
-[node name="ClickShape" type="CollisionShape2D" parent="ClickArea" index="0"]
-shape = SubResource( 1 )
+[node name="DragMovement2D" parent="." index="0"]
+click_shape = SubResource( 1 )
 
 [node name="Sprite" type="Sprite" parent="." index="2"]
-texture = ExtResource( 2 )
+texture = ExtResource( 3 )

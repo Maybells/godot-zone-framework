@@ -1,4 +1,4 @@
-extends Piece
+extends DragPiece2D
 
 
 enum {ARM, CHEST, HEAD, OTHER}
@@ -23,20 +23,10 @@ var file_prefix = {
 
 var type
 var icon_number
-var holding = false
 
 
 func _ready():
-	$ZoneDetector.add_exception($ClickArea)
-	
-	$ClickArea.connect("input_event", self, "_on_input_event")
-	
 	_load_icon()
-
-
-func _process(delta):
-	if holding:
-		position = get_viewport().get_mouse_position()
 
 
 func _load_icon():
@@ -55,33 +45,26 @@ func _load_icon():
 	$Sprite.texture = image
 
 
-func _on_input_event(viewport, event, shape_idx):
-	if event is InputEventMouseButton:
-		if event.button_index == BUTTON_LEFT:
-			if event.pressed and not holding and not game.has_focus():
-				_pick_up()
-			elif not event.pressed and game.is_focused(self):
-				_put_down()
-
-
-func _pick_up():
+# Called when piece is picked up
+func _on_picked_up():
 	if not game.has_focus() and game.can_focus(self):
 		z_index += 1
 		game.focus_piece(self)
-		holding = true
+	else:
+		$DragMovement2D.release()
 
 
-func _put_down():
-	if game.is_move_valid(self, origin_zone, overlap_zone):
+# Called when piece is put down
+func _on_put_down():
+	if game.is_move_valid(self, zone, overlap_zone):
 		z_index -= 1
 		game.unfocus_piece(self)
-		holding = false
 		game.move_piece(self, overlap_zone)
 	else:
-		holding = false
+		z_index -= 1
 		game.unfocus_piece(self)
-		if origin_zone:
-			game.move_piece(self, origin_zone)
+		if zone:
+			game.move_piece(self, zone)
 
 
 func set_item(name):
