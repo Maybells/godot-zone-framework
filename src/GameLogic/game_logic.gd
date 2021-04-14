@@ -48,8 +48,8 @@ func is_move_valid(piece, start, end):
 
 # Moves piece to the given zone
 func move_piece(piece, to):
-	piece.origin_zone.piece_removed(piece)
-	piece.origin_zone = to
+	piece.zone.piece_removed(piece)
+	piece.zone = to
 	to.piece_added(piece)
 	emit_signal("piece_moved", piece, to)
 

@@ -22,7 +22,7 @@ func reset_piece_position(piece):
 
 
 func piece_added(piece, location = null):
-	piece.origin_zone = self
+	piece.zone = self
 	pieces.append(piece)
 
 

@@ -14,6 +14,16 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Examples/Chess/chess_logic.gd"
 }, {
+"base": "KinematicBody2D",
+"class": "DragMovement2D",
+"language": "GDScript",
+"path": "res://src/Piece/2d/DragPiece2D/drag_movement_2d.gd"
+}, {
+"base": "Piece2D",
+"class": "DragPiece2D",
+"language": "GDScript",
+"path": "res://src/Piece/2d/DragPiece2D/drag_piece.gd"
+}, {
 "base": "Reference",
 "class": "GameLogic",
 "language": "GDScript",
@@ -59,10 +69,20 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Grid/move_sequence.gd"
 }, {
+"base": "Reference",
+"class": "OverlapDetector2D",
+"language": "GDScript",
+"path": "res://src/Piece/2d/DragPiece2D/overlap_detector_2d.gd"
+}, {
 "base": "Node2D",
 "class": "Piece",
 "language": "GDScript",
 "path": "res://src/Piece/piece.gd"
+}, {
+"base": "Piece",
+"class": "Piece2D",
+"language": "GDScript",
+"path": "res://src/Piece/2d/piece_2d.gd"
 }, {
 "base": "Grid",
 "class": "SquareGrid",
@@ -86,6 +106,8 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "ChessLogic": "",
+"DragMovement2D": "",
+"DragPiece2D": "",
 "GameLogic": "",
 "Grid": "",
 "GridBounds": "",
@@ -95,7 +117,9 @@ _global_script_class_icons={
 "InventoryLogic": "",
 "MovePattern": "",
 "MoveSequence": "",
+"OverlapDetector2D": "",
 "Piece": "",
+"Piece2D": "",
 "SquareGrid": "",
 "SquareGridBounds": "",
 "SquareMoveSequence": "",
