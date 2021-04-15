@@ -26,6 +26,7 @@ columns = 8
 rows = 8
 cell_size = Vector2( 64, 64 )
 cell_margin = Vector2( 0, 0 )
+color = Color( 1, 1, 1, 1 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 90.0

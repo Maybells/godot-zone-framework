@@ -31,7 +31,7 @@ var game_ongoing = true
 func _get_possibilities(piece):
 	_generate_obstacles(piece)
 	var possibilities = PoolVector2Array()
-	var position = _position_of_zone(piece.origin_zone)
+	var position = _position_of_zone(piece.zone)
 	match piece.type:
 		PAWN:
 			var pawn
@@ -72,7 +72,7 @@ func _get_possibilities(piece):
 			possibilities += grid.get_pattern_results(position, short_diag) + grid.get_pattern_results(position, short_orthog)
 		QUEEN:
 			possibilities += grid.get_pattern_results(position, bishop) + grid.get_pattern_results(position, rook)
-	possibilities.append(_position_of_zone(piece.origin_zone))
+	possibilities.append(_position_of_zone(piece.zone))
 	return possibilities
 
 
@@ -88,18 +88,18 @@ func _generate_obstacles(piece):
 			if piece.type == KNIGHT:
 				obstacle.type = GridObstacle.INVALID_END
 			
-			obstacle.position = _position_of_zone(p.origin_zone)
+			obstacle.position = _position_of_zone(p.zone)
 			grid.add_obstacle(obstacle)
 		else:
 			var obstacle = GridObstacle.new(GridObstacle.STICKY)
-			obstacle.position = _position_of_zone(p.origin_zone)
+			obstacle.position = _position_of_zone(p.zone)
 			
 			if piece.type == PAWN:
 				if not _is_pawn_diagonal(obstacle.position, piece):
 					obstacle.type = GridObstacle.IMPASSABLE
-				elif obstacle.position.x > _position_of_zone(piece.origin_zone).x:
+				elif obstacle.position.x > _position_of_zone(piece.zone).x:
 					piece.pawn_diag_right = true
-				elif obstacle.position.x < _position_of_zone(piece.origin_zone).x:
+				elif obstacle.position.x < _position_of_zone(piece.zone).x:
 					piece.pawn_diag_left = true
 			
 			grid.add_obstacle(obstacle)
@@ -110,7 +110,7 @@ func _position_of_zone(zone):
 
 
 func _is_pawn_diagonal(position, piece):
-	var location = _position_of_zone(piece.origin_zone)
+	var location = _position_of_zone(piece.zone)
 	if piece.is_white:
 		return position == location + SquareMoveSequence.DIAG_UL or position == location + SquareMoveSequence.DIAG_UR
 	else:
@@ -122,7 +122,7 @@ func _is_in_check(color):
 	
 	for p in pieces:
 		if p.is_white == color and p.type == KING:
-			king_position = _position_of_zone(p.origin_zone)
+			king_position = _position_of_zone(p.zone)
 	
 	for p in pieces:
 		if p.is_white != color and king_position:
@@ -150,7 +150,7 @@ func is_move_valid(piece, start, end):
 
 
 func move_piece(piece, to):
-	if to == piece.origin_zone:
+	if to == piece.zone:
 		piece.return_to_origin()
 		return
 	

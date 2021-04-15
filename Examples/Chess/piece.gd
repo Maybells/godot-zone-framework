@@ -1,4 +1,4 @@
-extends Piece
+extends DragPiece2D
 
 
 const PIECE_MAP = {
@@ -18,7 +18,6 @@ var black = Color.black
 var is_white = true
 var type
 var color
-var holding = false
 var first_move = true
 var pawn_diag_left = false
 var pawn_diag_right = false
@@ -26,28 +25,13 @@ var captured = false
 
 
 func _ready():
-	$ZoneDetector.add_exception($ClickArea)
+	$DragMovement2D.connect("picked_up", self, "_on_picked_up")
+	$DragMovement2D.connect("put_down", self, "_on_put_down")
 	
-	$ClickArea.connect("input_event", self, "_on_input_event")
 	_load_icon()
 	if type == ChessLogic.KING:
 		game.connect("king_checked", self, "_king_checked")
 		game.connect("king_not_checked", self, "_king_not_checked")
-
-
-func _process(delta):
-	if holding:
-		position = get_viewport().get_mouse_position()
-
-
-func _on_input_event(viewport, event, shape_idx):
-	if not captured:
-		if event is InputEventMouseButton:
-			if event.button_index == BUTTON_LEFT and event.pressed:
-				if not holding and not game.has_focus() and not game.just_unfocused():
-					_pick_up()
-				elif game.is_focused(self):
-					_put_down()
 
 
 func _load_icon():
@@ -62,26 +46,24 @@ func _load_icon():
 	$Sprite.texture = load("res://Examples/Chess/Images/" + icon + ".png")
 
 
-func _pick_up():
-	if not game.has_focus() and game.can_focus(self):
+func _on_picked_up():
+	if not captured and not game.has_focus() and game.can_focus(self):
 		z_index += 1
+		get_parent().move_child(self, get_parent().get_child_count() - 1)
 		game.focus_piece(self)
-		holding = true
+	else:
+		$DragMovement2D.release()
 
 
-func _put_down():
-	if game.is_move_valid(self, origin_zone, overlap_zone):
-		if origin_zone != overlap_zone:
+func _on_put_down():
+	if game.is_move_valid(self, zone, overlap_zone):
+		if zone != overlap_zone:
 			first_move = false
 		z_index -= 1
 		game.unfocus_piece(self)
-		holding = false
 		game.move_piece(self, overlap_zone)
 	else:
-		pass
-#		holding = false
-#		if origin_zone:
-#			game.move_piece(self, origin_zone)
+		$DragMovement2D.attach()
 
 
 func _king_checked(color):
@@ -100,5 +82,5 @@ func captured():
 	
 	captured = true
 	game.unregister_piece(self)
-	origin_zone.piece_removed(self)
+	zone.piece_removed(self)
 	queue_free()

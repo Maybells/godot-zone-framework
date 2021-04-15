@@ -30,7 +30,7 @@ func can_accept_piece(piece):
 	var p = pieces[0]
 	if p and p.is_white != piece.is_white:
 		return true
-	return piece.origin_zone == self
+	return piece.zone == self
 
 
 func reset_piece_position(piece):
