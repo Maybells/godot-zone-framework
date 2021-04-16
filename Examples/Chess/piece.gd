@@ -49,7 +49,6 @@ func _load_icon():
 func _on_picked_up():
 	if not captured and not game.has_focus() and game.can_focus(self):
 		z_index += 1
-		get_parent().move_child(self, get_parent().get_child_count() - 1)
 		game.focus_piece(self)
 	else:
 		$DragMovement2D.release()
