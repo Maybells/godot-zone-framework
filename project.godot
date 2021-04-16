@@ -75,11 +75,6 @@ _global_script_classes=[ {
 "path": "res://src/Piece/2d/DragPiece2D/overlap_detector_2d.gd"
 }, {
 "base": "Node2D",
-"class": "Piece",
-"language": "GDScript",
-"path": "res://src/Piece/piece.gd"
-}, {
-"base": "Piece",
 "class": "Piece2D",
 "language": "GDScript",
 "path": "res://src/Piece/2d/piece_2d.gd"
@@ -118,7 +113,6 @@ _global_script_class_icons={
 "MovePattern": "",
 "MoveSequence": "",
 "OverlapDetector2D": "",
-"Piece": "",
 "Piece2D": "",
 "SquareGrid": "",
 "SquareGridBounds": "",
