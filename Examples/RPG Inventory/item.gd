@@ -47,9 +47,8 @@ func _load_icon():
 
 # Called when piece is picked up
 func _on_picked_up():
-	if not game.has_focus() and game.can_focus(self):
+	if true:
 		z_index += 1
-		game.focus_piece(self)
 	else:
 		$DragMovement2D.release()
 
@@ -58,11 +57,9 @@ func _on_picked_up():
 func _on_put_down():
 	if game.is_move_valid(self, zone, overlap_zone):
 		z_index -= 1
-		game.unfocus_piece(self)
 		game.move_piece(self, overlap_zone)
 	else:
 		z_index -= 1
-		game.unfocus_piece(self)
 		if zone:
 			game.move_piece(self, zone)
 

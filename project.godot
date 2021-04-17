@@ -129,7 +129,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Godot Zone Framework"
-run/main_scene="res://Examples/Chess/chess.tscn"
+run/main_scene="res://Examples/RPG Inventory/inventory.tscn"
 config/icon="res://icon.png"
 
 [rendering]
