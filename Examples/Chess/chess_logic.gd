@@ -36,6 +36,7 @@ func _get_possibilities(piece):
 	
 	set_effect("move_possibilities", attacks)
 	set_effect("move_origin", [_position_of_zone(piece.zone)])
+	update_effects()
 
 
 func _get_possible_attacks(piece):
@@ -171,19 +172,14 @@ func move_piece(piece, to):
 		emit_signal("king_not_checked", not current_turn)
 
 
-func can_focus(piece):
-	return piece.is_white == current_turn and game_ongoing
-
-
-func focus_piece(piece):
+func piece_picked_up(piece):
 	_get_possibilities(piece)
-	.focus_piece(piece)
 
 
-func unfocus_piece(piece):
+func piece_put_down(piece):
 	reset_effect("move_possibilities")
 	reset_effect("move_origin")
-	.unfocus_piece(piece)
+	update_effects()
 
 
 func is_valid_endpoint(zone):

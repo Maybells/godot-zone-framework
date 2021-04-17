@@ -8,8 +8,7 @@ var color
 
 
 func _ready():
-	game.connect("piece_focused", self, "_on_piece_focus")
-	game.connect("piece_unfocused", self, "_on_piece_focus")
+	game.connect("effect_changed", self, "_on_effect_changed")
 	
 	if is_white:
 		color = white
@@ -48,5 +47,5 @@ func piece_removed(piece):
 	.piece_removed(piece)
 
 
-func _on_piece_focus():
+func _on_effect_changed():
 	update()

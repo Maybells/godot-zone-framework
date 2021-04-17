@@ -47,9 +47,9 @@ func _load_icon():
 
 
 func _on_picked_up():
-	if not captured and not game.has_focus() and game.can_focus(self):
+	if not captured:
 		z_index += 1
-		game.focus_piece(self)
+		game.piece_picked_up(self)
 	else:
 		$DragMovement2D.release()
 
@@ -59,8 +59,8 @@ func _on_put_down():
 		if zone != overlap_zone:
 			first_move = false
 		z_index -= 1
-		game.unfocus_piece(self)
 		game.move_piece(self, overlap_zone)
+		game.piece_put_down(self)
 	else:
 		$DragMovement2D.attach()
 

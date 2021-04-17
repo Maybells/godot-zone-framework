@@ -6,9 +6,7 @@ extends Node
 signal game_reset
 signal game_initialized
 signal piece_moved(piece, to)
-signal effect_changed(effect)
-signal piece_focused
-signal piece_unfocused
+signal effect_changed
 
 
 var pieces = Array()
@@ -31,8 +29,6 @@ func register_zone(zone):
 
 
 func unregister_piece(piece):
-	if is_focused(piece):
-		unfocus_piece(piece)
 	piece.game = null
 	pieces.erase(piece)
 
@@ -67,7 +63,6 @@ func add_to_effect(effect: String, object) -> void:
 	else:
 		var e = EffectGroup.new(effect, [object])
 		_effect_groups[effect] = e
-	emit_signal("effect_changed", effect)
 
 
 func set_effect(effect: String, objects: Array) -> void:
@@ -75,43 +70,12 @@ func set_effect(effect: String, objects: Array) -> void:
 		_effect_groups[effect].elements = objects
 	else:
 		_effect_groups[effect] = EffectGroup.new(effect, objects)
-	emit_signal("effect_changed", effect)
 
 
 func reset_effect(effect: String) -> void:
 	if effect in _effect_groups:
 		_effect_groups[effect].reset()
-	emit_signal("effect_changed", effect)
 
 
-func has_focus():
-	return not focused_pieces.empty()
-
-
-func is_focused(piece):
-	return piece in focused_pieces
-
-
-func just_unfocused():
-	return just_unfocused
-
-
-func can_focus(piece):
-	return true
-
-
-func focus_piece(piece):
-	focused_pieces.append(piece)
-	emit_signal("piece_focused")
-
-
-func unfocus_piece(piece):
-	just_unfocused = true
-	focused_pieces.erase(piece)
-	emit_signal("piece_unfocused")
-
-
-func unfocus_all():
-	just_unfocused = true
-	focused_pieces = Array()
-	emit_signal("piece_unfocused")
+func update_effects():
+	emit_signal("effect_changed")
