@@ -6,6 +6,7 @@ extends Node
 signal game_reset
 signal game_initialized
 signal piece_moved(piece, to)
+signal effect_changed(effect)
 signal piece_focused
 signal piece_unfocused
 
@@ -66,6 +67,7 @@ func add_to_effect(effect: String, object) -> void:
 	else:
 		var e = EffectGroup.new(effect, [object])
 		_effect_groups[effect] = e
+	emit_signal("effect_changed", effect)
 
 
 func set_effect(effect: String, objects: Array) -> void:
@@ -73,11 +75,13 @@ func set_effect(effect: String, objects: Array) -> void:
 		_effect_groups[effect].elements = objects
 	else:
 		_effect_groups[effect] = EffectGroup.new(effect, objects)
+	emit_signal("effect_changed", effect)
 
 
 func reset_effect(effect: String) -> void:
 	if effect in _effect_groups:
 		_effect_groups[effect].reset()
+	emit_signal("effect_changed", effect)
 
 
 func has_focus():
