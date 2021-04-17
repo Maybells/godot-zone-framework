@@ -23,12 +23,22 @@ var knight = MovePattern.new("2RU", MovePattern.ROTATE_MIRROR)
 var short_diag = MovePattern.new("/RU", MovePattern.ROTATE)
 var short_orthog = MovePattern.new("R", MovePattern.ROTATE)
 
-var move_possibilies = PoolVector2Array()
 var current_turn = WHITE
 var game_ongoing = true
 
 
 func _get_possibilities(piece):
+	reset_effect("move_possibilities")
+	reset_effect("move_origin")
+	
+	_generate_obstacles(piece)
+	var attacks = _get_possible_attacks(piece)
+	
+	set_effect("move_possibilities", attacks)
+	set_effect("move_origin", [_position_of_zone(piece.zone)])
+
+
+func _get_possible_attacks(piece):
 	_generate_obstacles(piece)
 	var possibilities = PoolVector2Array()
 	var position = _position_of_zone(piece.zone)
@@ -72,9 +82,7 @@ func _get_possibilities(piece):
 			possibilities += grid.get_pattern_results(position, short_diag) + grid.get_pattern_results(position, short_orthog)
 		QUEEN:
 			possibilities += grid.get_pattern_results(position, bishop) + grid.get_pattern_results(position, rook)
-	possibilities.append(_position_of_zone(piece.zone))
 	return possibilities
-
 
 func _generate_obstacles(piece):
 	grid.clear_obstacles()
@@ -126,7 +134,7 @@ func _is_in_check(color):
 	
 	for p in pieces:
 		if p.is_white != color and king_position:
-			var attack = _get_possibilities(p)
+			var attack = _get_possible_attacks(p)
 			if king_position in attack:
 				return true
 	return false
@@ -142,9 +150,8 @@ func _next_turn():
 
 func is_move_valid(piece, start, end):
 	if end:
-		var possible = _get_possibilities(piece)
 		var aim = _position_of_zone(end)
-		if aim in possible and end.can_accept_piece(piece):
+		if (has_effect("move_possibilities", aim) or has_effect("move_origin", aim)) and end.can_accept_piece(piece):
 			return true
 		return false
 	else:
@@ -169,18 +176,20 @@ func can_focus(piece):
 
 
 func focus_piece(piece):
-	move_possibilies = _get_possibilities(piece)
+	_get_possibilities(piece)
 	.focus_piece(piece)
 
 
 func unfocus_piece(piece):
-	move_possibilies = PoolVector2Array()
+	reset_effect("move_possibilities")
+	reset_effect("move_origin")
 	.unfocus_piece(piece)
 
 
 func is_valid_endpoint(zone):
 	var position = _position_of_zone(zone)
-	return position in move_possibilies
+	return has_effect("move_possibilities", position) or has_effect("move_origin", position)
+
 
 func end_game():
 	game_ongoing = false

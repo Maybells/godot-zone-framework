@@ -34,10 +34,6 @@ func _ready():
 	game.connect("game_ended", self, "_game_ended")
 
 
-func _process(delta):
-	game.tick()
-
-
 func _generate_piece_at(rank, file):
 	var p = piece.instance()
 	game.register_piece(p)
