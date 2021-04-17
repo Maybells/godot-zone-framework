@@ -11,6 +11,8 @@ onready var game = ChessLogic.new()
 
 # Generates the grid of chess tiles
 func _ready():
+	add_child(game)
+	
 	var index = 0
 	for point in $Grid.points:
 		var t = tile.instance()
@@ -42,8 +44,10 @@ func _generate_piece_at(rank, file):
 	
 	if file <= 1:
 		p.is_white = false
+		p.add_to_group("Black")
 	elif file >= 6:
 		p.is_white = true
+		p.add_to_group("White")
 	
 	if file == 1 or file == 6:
 		p.type = ChessLogic.PAWN

@@ -24,7 +24,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/Piece/2d/DragPiece2D/drag_piece.gd"
 }, {
-"base": "Reference",
+"base": "Node",
 "class": "GameLogic",
 "language": "GDScript",
 "path": "res://src/GameLogic/game_logic.gd"

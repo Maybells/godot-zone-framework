@@ -24,3 +24,8 @@ func _on_picked_up():
 # Called when piece is put down
 func _on_put_down():
 	pass
+
+
+# Changes whether the piece can be picked up
+func set_enabled(enabled: bool) -> void:
+	$DragMovement2D.enabled = enabled

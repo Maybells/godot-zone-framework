@@ -1,5 +1,7 @@
 class_name GameLogic
 
+extends Node
+
 
 signal game_reset
 signal game_initialized

@@ -136,6 +136,8 @@ func _next_turn():
 	if game_ongoing:
 		current_turn = not current_turn
 		emit_signal("turn_changed", current_turn)
+		get_tree().call_group("Black", "set_enabled", current_turn == BLACK)
+		get_tree().call_group("White", "set_enabled", current_turn == WHITE)
 
 
 func is_move_valid(piece, start, end):
