@@ -14,7 +14,6 @@ script = ExtResource( 2 )
 [node name="DragMovement2D" parent="." index="0"]
 click_shape = SubResource( 1 )
 sticky_click = true
-automatic_drop = false
 
 [node name="Sprite" type="Sprite" parent="." index="2"]
 texture = ExtResource( 3 )

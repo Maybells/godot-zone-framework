@@ -47,8 +47,11 @@ func _load_icon():
 
 
 func _on_picked_up():
-	z_index += 1
-	game.piece_picked_up(self)
+	if not captured:
+		z_index += 1
+		game.piece_picked_up(self)
+	else:
+		$DragMovement2D.release()
 
 
 func _on_put_down():
@@ -58,7 +61,8 @@ func _on_put_down():
 		z_index -= 1
 		game.move_piece(self, overlap_zone)
 		game.piece_put_down(self)
-		$DragMovement2D.release()
+	else:
+		$DragMovement2D.attach()
 
 
 func _king_checked(color):

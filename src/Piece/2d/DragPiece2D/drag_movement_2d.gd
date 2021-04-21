@@ -6,32 +6,26 @@ class_name DragMovement2D
 extends KinematicBody2D
 
 
-# Called when the user lifts the object
-signal drag_begun
-# Called when the user releases the object
-signal drag_ended
+# Called when parent starts following the mouse.
+signal picked_up
+# Called when parent stops following the mouse.
+signal put_down
 
 
 # Load child nodes in advance
 onready var _click_shape = $ClickArea/CollisionShape2D
 onready var _collision_shape = $CollisionShape2D
 
-# Whether the user can lift the object
+# Whether the area can be dragged
 export (bool) var enabled := true
 # Where the user can click to begin dragging
 export (Shape2D) var click_shape = RectangleShape2D.new() setget _click_shape_set
 # If false, drag will release when user lets go of the mouse button.
 # If true, drag won't release until user clicks a second time.
 export (bool) var sticky_click := false
-# If true, the dragged object will move so that the mouse is always at (0, 0).
-# If false, the dragged object will move so that the mouse retains the same relative position.
+# If true, the dragged area will move so that the mouse is at (0, 0).
+# If false, the dragged area will move so that the mouse retains the same relative position.
 export (bool) var grab_centered := true
-# Whether the user clicking will automatically begin the drag.
-# Set to false if you want to handle the signal manually
-export (bool) var automatic_attach := true
-# Whether the user releasing will automatically end the drag.
-# Set to false if you want to handle the signal manually
-export (bool) var automatic_drop := true
 # Whether dragging can change the x position
 export (bool) var restrict_x := false
 # Whether dragging can change the y position
@@ -45,9 +39,9 @@ export (bool) var drop_on_collide := false
 
 # Whether the area is currently being dragged
 var dragging := false
-# The initial mouse position relative to the dragged object
+# The initial mouse position relative to the dragged area
 var _drag_offset := Vector2()
-# The initial position of the drag relative to its parent
+# The initial position of the drag area relative to its parent
 var _initial_offset := Vector2()
 
 
@@ -74,21 +68,20 @@ func _input(event):
 
 # Begins or stops the drag if possible
 func _handle_input(event: InputEvent):
-	if _can_lift(event):
-		lift()
+	if _can_pick_up(event):
+		pick_up()
 		get_tree().set_input_as_handled()
-	elif _can_drop(event):
-		drop()
-		get_tree().set_input_as_handled()
+	elif _can_put_down(event):
+		put_down()
 
 
 # Whether the user can start dragging
-func _can_lift(event: InputEvent) -> bool:
+func _can_pick_up(event: InputEvent) -> bool:
 	return enabled and event.pressed and not dragging and _is_in_drag_area(event.position)
 
 
 # Whether the user can stop dragging
-func _can_drop(event: InputEvent) -> bool:
+func _can_put_down(event: InputEvent) -> bool:
 	return dragging and sticky_click == event.pressed
 
 
@@ -104,7 +97,7 @@ func _is_in_drag_area(point: Vector2) -> bool:
 
 
 # Moves restricted axes from a vector
-func _constrain_movement(movement: Vector2) -> Vector2:
+func _constrain_movement(movement: Vector2):
 	if restrict_x:
 		movement.x = 0
 	if restrict_y:
@@ -113,14 +106,14 @@ func _constrain_movement(movement: Vector2) -> Vector2:
 
 
 # Moves toward the mouse, stopping if collision detected.
-func _move_to_mouse(delta) -> void:
+func _move_to_mouse(delta):
 	var target = get_viewport().get_mouse_position() - _drag_offset - global_position
 	target = _constrain_movement(target)
 	move_and_slide(target / delta)
 	get_parent().position = global_position - _initial_offset
 	position = _initial_offset
 	if drop_on_collide and get_slide_count():
-		drop()
+		put_down()
 
 
 func _collision_set(val: bool):
@@ -141,17 +134,15 @@ func _collision_shape_set(val: Shape2D):
 
 
 # Makes the parent start following the mouse.
-func lift() -> void:
-	emit_signal("drag_begun")
-	if automatic_attach:
-		attach()
+func pick_up() -> void:
+	attach()
+	emit_signal("picked_up")
 
 
 # Makes the parent stop following the mouse.
-func drop() -> void:
-	emit_signal("drag_ended")
-	if automatic_drop:
-		release()
+func put_down() -> void:
+	release()
+	emit_signal("put_down")
 
 
 # Makes the parent start following the mouse without triggering a signal
