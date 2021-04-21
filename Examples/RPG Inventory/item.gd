@@ -47,10 +47,7 @@ func _load_icon():
 
 # Called when piece is picked up
 func _on_picked_up():
-	if true:
-		z_index += 1
-	else:
-		$DragMovement2D.release()
+	z_index += 1
 
 
 # Called when piece is put down

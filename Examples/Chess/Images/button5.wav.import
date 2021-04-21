@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/button5.wav-33b4508fe3a972f5e790bf55bf1b617d.sample"
+
+[deps]
+
+source_file="res://Examples/Chess/Images/button5.wav"
+dest_files=[ "res://.import/button5.wav-33b4508fe3a972f5e790bf55bf1b617d.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0
