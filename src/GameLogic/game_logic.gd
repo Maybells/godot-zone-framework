@@ -12,9 +12,6 @@ signal effect_changed
 var pieces = Array()
 var zones = Array()
 
-var focused_pieces = Array()
-var just_unfocused = false
-
 var _effect_groups := Dictionary()
 
 
@@ -39,24 +36,26 @@ func unregister_zone(zone):
 
 
 # Returns true if the game logic allows piece to go from start to end
-func is_move_valid(piece, start, end):
+func is_move_valid(piece, start: Zone, end: Zone) -> bool:
 	return (end != null) and (end.can_accept_piece(piece))
 
 
 # Moves piece to the given zone
-func move_piece(piece, to):
+func move_piece(piece, to: Zone) -> void:
 	piece.zone.piece_removed(piece)
 	piece.zone = to
 	to.piece_added(piece)
 	emit_signal("piece_moved", piece, to)
 
 
+# Returns whether the given object is included in the effect
 func has_effect(effect: String, object) -> bool:
 	if effect in _effect_groups:
 		return _effect_groups[effect].has(object)
 	return false
 
 
+# Adds the given object to an effect, creating it if not already created
 func add_to_effect(effect: String, object) -> void:
 	if effect in _effect_groups:
 		_effect_groups[effect].add(object)
