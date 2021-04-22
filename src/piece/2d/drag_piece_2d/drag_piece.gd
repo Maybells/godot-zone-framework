@@ -4,26 +4,28 @@ extends Piece2D
 
 
 # The zone that is currently underneath the DragPiece2D, can be null.
-var overlap_zone: Zone2D
+var overlap_zone
 
 
-func _ready():
+# Connects necessary signals.
+func _ready() -> void:
 	$OverlapDetector2D.connect("overlap_changed", self, "_on_overlap_changed")
 	$DragMovement2D.connect("drag_begun", self, "_on_picked_up")
 	$DragMovement2D.connect("drag_ended", self, "_on_put_down")
 
 
-func _on_overlap_changed(from, to):
+# Sets `overlap_zone` to the currently overlapped zone
+func _on_overlap_changed(from, to) -> void:
 	overlap_zone = to
 
 
 # Called when piece is picked up. Override to add functionality.
-func _on_picked_up():
+func _on_picked_up() -> void:
 	pass
 
 
 # Called when piece is put down. Override to add functionality.
-func _on_put_down():
+func _on_put_down() -> void:
 	pass
 
 

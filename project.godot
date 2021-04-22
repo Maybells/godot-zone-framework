@@ -64,7 +64,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://Examples/RPG Inventory/inventory_logic.gd"
 }, {
-"base": "Reference",
+"base": "Resource",
 "class": "MovePattern",
 "language": "GDScript",
 "path": "res://src/grid/move_pattern.gd"
@@ -94,6 +94,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/grid/square_grid/square_grid_bounds.gd"
 }, {
+"base": "MovePattern",
+"class": "SquareMovePattern",
+"language": "GDScript",
+"path": "res://src/grid/square_grid/square_move_pattern.gd"
+}, {
 "base": "MoveSequence",
 "class": "SquareMoveSequence",
 "language": "GDScript",
@@ -122,6 +127,7 @@ _global_script_class_icons={
 "Piece2D": "",
 "SquareGrid": "",
 "SquareGridBounds": "",
+"SquareMovePattern": "",
 "SquareMoveSequence": "",
 "Zone2D": ""
 }

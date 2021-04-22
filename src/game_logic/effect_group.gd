@@ -1,22 +1,28 @@
+# A container of all ids under an effect
 class_name EffectGroup
 
 
-var id: String
-var elements := Array()
+# The name of the effect
+var name: String
+# An array of ids under the effect
+var ids := Array()
 
 
-func _init(id: String, elements: Array = Array()):
-	self.id = id
-	self.elements = elements
+func _init(name: String, ids: Array = Array()):
+	self.name = name
+	self.ids = ids
 
 
-func has(element) -> bool:
-	return elements.has(element)
+# Returns whether the given id is under the effect.
+func has(id) -> bool:
+	return ids.has(id)
 
 
-func add(element) -> void:
-	elements.append(element)
+# Adds the given id to the effect
+func add(id) -> void:
+	ids.append(id)
 
 
+# Removes all ids from the effect
 func reset() -> void:
-	elements.clear()
+	ids.clear()

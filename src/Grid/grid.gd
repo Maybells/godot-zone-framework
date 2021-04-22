@@ -1,7 +1,10 @@
+# An abstract class for handling grid-based movement and connections
 class_name Grid
 
 
+# The outer limits of the grid
 var bounds
+# An array of obstacles on the grid
 var obstacles = Array()
 
 

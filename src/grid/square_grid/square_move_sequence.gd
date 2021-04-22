@@ -1,6 +1,5 @@
-extends MoveSequence
-
 class_name SquareMoveSequence
+extends MoveSequence
 
 
 const LEFT = Vector2.LEFT

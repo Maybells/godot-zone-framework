@@ -7,9 +7,9 @@ extends Node2D
 # The identifier is not constrained to a specific data type, so `1234`, `(12, 2)`, and `"black_queen"` are all valid ids.
 var id
 # The GameLogic associated with this piece
-var game: GameLogic
+var game
 # The Zone that currently contains this piece
-var zone: Zone2D
+var zone
 
 
 # Moves the piece to a default location specified by its Zone

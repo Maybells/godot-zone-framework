@@ -2,9 +2,5 @@
 
 [ext_resource path="res://src/piece/2d/piece_2d.gd" type="Script" id=1]
 
-
-
 [node name="Piece" type="Node2D"]
 script = ExtResource( 1 )
-
-[node name="MoveTween" type="Tween" parent="."]

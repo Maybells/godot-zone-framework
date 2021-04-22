@@ -1,25 +1,22 @@
+# A resource describing a set of potential movements
 class_name MovePattern
+extends Resource
 
 
-# NONE will not mirror or rotate moves
-# MIRROR_X mirrors across the y axis
-# MIRROR_Y mirrors across the x axis
-# MIRROR_XY mirrors across the x and y axes
-# ROTATE mirrors radially
-# ROTATE_MIRROR mirrors radially and across the radius
-enum {NONE, MIRROR_X, MIRROR_Y, MIRROR_XY, ROTATE, ROTATE_MIRROR}
+# <-- Modes -->
+# Will not mirror or rotate moves
+const NONE = 0
 
 
-var moves
-var repeat
-var mode
+# The base moves of the sequence
+var moves: String
+# How many times the pattern can repeat. If repeat is -1, will repeat until stopped.
+var repeat: int
+# Any additional operations that will be applied to the pattern
+var mode: int
 
 
-func _init(moves, mode = NONE, repeat = 0):
-	self.moves = _generate_moves(moves)
+func _init(moves: String, mode: int = NONE, repeat: int = 0):
+	self.moves = moves
 	self.repeat = repeat
 	self.mode = mode
-
-
-func _generate_moves(string):
-	return SquareMoveSequence.new(string)
