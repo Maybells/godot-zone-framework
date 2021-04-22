@@ -5,24 +5,40 @@ class_name EffectGroup
 # The name of the effect
 var name: String
 # An array of ids under the effect
-var ids := Array()
+var ids := {}
 
 
-func _init(name: String, ids: Array = Array()):
+func _init(name: String, ids: Dictionary = {}):
 	self.name = name
 	self.ids = ids
 
 
 # Returns whether the given id is under the effect.
-func has(id) -> bool:
-	return ids.has(id)
+func is_affected(id) -> bool:
+	return id in ids
 
 
-# Adds the given id to the effect
-func add(id) -> void:
-	ids.append(id)
+# Returns an array of all effect params associated with the given id.
+# If given id is not under the effect, returns an empty array.
+func get_params_at(id) -> Array:
+	if is_affected(id):
+		return ids[id]
+	return []
+
+
+# Adds the given id to the effect with the given parameters
+func add(id, params: Dictionary = {}) -> void:
+	if id in ids:
+		ids[id].append(params)
+	else:
+		ids[id] = [params]
 
 
 # Removes all ids from the effect
-func reset() -> void:
+func clear() -> void:
 	ids.clear()
+
+
+# Remove the given id from the effect
+func remove(id) -> void:
+	ids.erase(id)
