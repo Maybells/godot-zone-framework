@@ -8,7 +8,7 @@ func _init(moves = ""):
 	sequence = _sequence_from_string(moves)
 
 
-func _sequence_from_string(string):
+func _sequence_from_string(string: String) -> Array:
 	var out = Array()
 	string = string.to_upper()
 	var repeat = 0

@@ -12,6 +12,18 @@ const DIAG_UL = UP + LEFT
 const DIAG_DL = DOWN + LEFT
 
 
+const CLOCKWISE = {
+	LEFT: UP,
+	RIGHT: DOWN,
+	UP: RIGHT,
+	DOWN: LEFT,
+	DIAG_DL: DIAG_UL,
+	DIAG_DR: DIAG_DL,
+	DIAG_UL: DIAG_UR,
+	DIAG_UR: DIAG_DR,
+}
+
+
 func _init(moves = "").(moves):
 	pass
 
@@ -48,22 +60,7 @@ func _direction_from_token(token):
 func _rotate_clockwise(moves = sequence):
 	var replacement = PoolVector2Array()
 	for move in moves:
-		if move == LEFT:
-			replacement.append(UP)
-		elif move == RIGHT:
-			replacement.append(DOWN)
-		elif move == UP:
-			replacement.append(RIGHT)
-		elif move == DOWN:
-			replacement.append(LEFT)
-		elif move == DIAG_DL:
-			replacement.append(DIAG_UL)
-		elif move == DIAG_DR:
-			replacement.append(DIAG_DL)
-		elif move == DIAG_UL:
-			replacement.append(DIAG_UR)
-		elif move == DIAG_UR:
-			replacement.append(DIAG_DR)
+		replacement.append(CLOCKWISE[move])
 	return replacement
 
 
