@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/arm_1.png-f6febff677a0915a78324addcc1ce00c.stex"
+path="res://.import/arm_1.png-6c19cd9b342cb7997febddf5b77bd454.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/RPG Inventory/Images/arm_1.png"
-dest_files=[ "res://.import/arm_1.png-f6febff677a0915a78324addcc1ce00c.stex" ]
+source_file="res://Examples/RPG Inventory/images/arm_1.png"
+dest_files=[ "res://.import/arm_1.png-6c19cd9b342cb7997febddf5b77bd454.stex" ]
 
 [params]
 

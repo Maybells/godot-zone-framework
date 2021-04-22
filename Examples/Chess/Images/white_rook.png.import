@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white_rook.png-8ccdc98d899a1083169f2e18984cdc02.stex"
+path="res://.import/white_rook.png-d71b78a95c4807aacb9aa17021ce10de.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/Chess/Images/white_rook.png"
-dest_files=[ "res://.import/white_rook.png-8ccdc98d899a1083169f2e18984cdc02.stex" ]
+source_file="res://Examples/Chess/images/white_rook.png"
+dest_files=[ "res://.import/white_rook.png-d71b78a95c4807aacb9aa17021ce10de.stex" ]
 
 [params]
 

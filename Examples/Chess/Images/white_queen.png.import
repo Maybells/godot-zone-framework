@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/white_queen.png-452ba60ce234100d60b9efa58ab493aa.stex"
+path="res://.import/white_queen.png-23a8489a4a6181b0beef6dbb28371294.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/Chess/Images/white_queen.png"
-dest_files=[ "res://.import/white_queen.png-452ba60ce234100d60b9efa58ab493aa.stex" ]
+source_file="res://Examples/Chess/images/white_queen.png"
+dest_files=[ "res://.import/white_queen.png-23a8489a4a6181b0beef6dbb28371294.stex" ]
 
 [params]
 
