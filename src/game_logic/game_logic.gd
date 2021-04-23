@@ -92,7 +92,7 @@ func get_effect_params(name: String, id):
 			if params.empty():
 				return {}
 			else:
-				return params.first()
+				return params.front()
 		else:
 			return _effect_groups[name].get_params_at(id)
 	return null

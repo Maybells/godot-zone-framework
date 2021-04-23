@@ -1,6 +1,5 @@
 # A resource describing a set of potential movements
 class_name MovePattern
-extends Resource
 
 
 # <-- Modes -->
