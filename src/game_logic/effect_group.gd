@@ -2,6 +2,9 @@
 class_name EffectGroup
 
 
+signal updated
+
+
 # The name of the effect
 var name: String
 # An array of ids under the effect
@@ -11,6 +14,10 @@ var ids := {}
 func _init(name: String, ids: Dictionary = {}):
 	self.name = name
 	self.ids = ids
+
+
+func update():
+	emit_signal("updated")
 
 
 # Returns whether the given id is under the effect.

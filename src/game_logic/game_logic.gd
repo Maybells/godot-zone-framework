@@ -3,10 +3,6 @@ class_name GameLogic
 extends Node
 
 
-# Called when the game effects are updated
-signal effect_changed
-
-
 # If true, each id in an effect can only have one set of parameters. Adding a new set will overwrite the first.
 # If false, an id can have multiple sets of parameters.
 export (bool) var single_effect_params = true
@@ -63,6 +59,19 @@ func has_effect(name: String, id) -> bool:
 	return false
 
 
+# Connect the given object to the signal for when the effect is updated.
+func connect_to_effect(name: String, target: Object, function: String):
+	if not name in _effect_groups:
+		_effect_groups[name] = EffectGroup.new(name)
+	_effect_groups[name].connect("updated", target, function)
+
+
+# Signals listeners of an effect to update to new values.
+func update_effect(name: String):
+	if name in _effect_groups:
+		_effect_groups[name].update()
+
+
 # Adds the given id to an effect, creating the effect if not already created.
 func add_to_effect(name: String, id, params: Dictionary = {}) -> void:
 	if single_effect_params:
@@ -102,8 +111,3 @@ func get_effect_params(name: String, id):
 func reset_effect(name: String) -> void:
 	if name in _effect_groups:
 		_effect_groups[name].clear()
-
-
-# Notify listeners to update effect-based logic.
-func update_effects():
-	emit_signal("effect_changed")
