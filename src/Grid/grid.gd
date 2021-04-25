@@ -2,140 +2,122 @@
 class_name Grid
 
 
-# The outer limits of the grid
-var bounds
-# An array of obstacles on the grid
-var obstacles = Array()
+var boundaries: GridBounds
+var obstacles
 
 
-func _init(bounds):
-	self.bounds = bounds
+func _init(boundaries: GridBounds):
+	self.boundaries = boundaries
 
 
-func _move_sequence_results(position, moves):
-	for move in moves.sequence:
-		if is_direction_valid(position, move):
-			position = position_in_direction(position, move)
-		else:
-			return false
-	return position
-
-
-func _calculate_move_sequence_results(position, moves, repeat):
-	var results = PoolVector2Array()
-	var last_pos = position
-	var i = 0
-	while i <= repeat or repeat == -1:
-		var result = _move_sequence_results(last_pos, moves)
-		if result or result is Vector2:
-			var obstacle = _obstacle_at_position(result)
-			if obstacle:
-				if obstacle.type == GridObstacle.STICKY:
-					results.append(result)
-					break
-				elif obstacle.type == GridObstacle.INVALID_END:
-					pass
-			else:
-				results.append(result)
-			last_pos = result
-		else:
-			break
-		i += 1
-
-	return results
-
-
-func _batch_move_results(position, batch, repeat):
-	var results = PoolVector2Array()
-	for sequence in batch:
-		var result = _calculate_move_sequence_results(position, sequence, repeat)
-		if result:
-			results += result
-	
-	return results
-
-
-func _move_sequence_from_moves(moves):
-	var sequence = MoveSequence.new()
-	sequence.sequence = moves
-	return sequence
-
-
-func _distance_between_points(from, to):
-	return
-
-
-func _obstacle_at_position(position):
+func _obstacles_at(position) -> Array:
+	var out := []
 	for obstacle in obstacles:
 		if obstacle.position == position:
-			return obstacle
-	return false
+			out.append(obstacle)
+	return out
 
 
-func is_position_valid(position):
-	if bounds.is_in_bounds(position):
-		var obstacle = _obstacle_at_position(position)
-		if obstacle:
-			if obstacle.type == GridObstacle.STICKY or obstacle.type == GridObstacle.INVALID_END:
-				obstacle = false
-		return not obstacle
-	return false
+func _pattern_to_paths(pattern):
+	pass
 
 
-func convert_index_to_position(index):
-	return
+func _invert_direction(direction):
+	pass
 
 
-func convert_position_to_index(position):
-	return
+func _duplicate_path(path: MovePath) -> MovePath:
+	var duplicate = MovePath.new(path.instructions)
+	duplicate.path = path.path.duplicate()
+	duplicate.failed = path.failed
+	duplicate.finished = path.finished
+	duplicate.interactions = path.interactions.duplicate()
+	return duplicate
 
 
-func position_in_direction(position, direction):
-	return position + direction
+func _handle_obstacle(path: MovePath, obstacle: GridObstacle):
+	path.add_interaction(obstacle)
+	match obstacle.type:
+		GridObstacle.IMPASSABLE:
+			path.failed = true
+		GridObstacle.STICKY:
+			path.finished = true
+			path.can_continue = false
+		_:
+			pass
 
 
-func get_adjacent(position):
-	return get_at_distance(position, 1)
+func _handle_obstacles_at(position, path: MovePath, direction, can_interact := "apply_on_enter"):
+	var obs := _obstacles_at(position)
+	for obstacle in obs:
+		if obstacle.get(can_interact) and obstacle.covers(direction):
+			_handle_obstacle(path, obstacle)
 
 
-func get_at_distance(position, distance):
-	if distance == 0:
-		return position
-	return get_distance_range(position, distance, distance)
+func _handle_end_obstacles(position, path: MovePath):
+	var obs := _obstacles_at(position)
+	for obstacle in obs:
+		if obstacle.type == GridObstacle.INVALID_END:
+			path.failed = true
 
 
-func get_distance_range(position, lower, upper):
-	return
+func _enter_position(position, path: MovePath, direction):
+	if boundaries.is_in_bounds(position):
+		_handle_obstacles_at(position, path, direction, "apply_on_enter")
+	else:
+		path.failed = true
+	
+	path.add_point(position)
 
 
-func get_within_distance(position, distance):
-	return get_distance_range(position, 0, distance)
+func _leave_position(path: MovePath, direction):
+	var position = path.end_position
+	var inverse_direction = _invert_direction(direction)
+	_handle_obstacles_at(position, path, inverse_direction, "apply_on_exit")
+	if not path.failed and not path.finished:
+		var to = position + direction
+		_enter_position(to, path, direction)
 
 
-func is_direction_valid(position, direction):
-	var result = position_in_direction(position, direction)
-	return is_position_valid(result)
+func _start_at_position(position, path: MovePath):
+	var direction = MovePattern.NO_DIRECTION
+	if boundaries.is_in_bounds(position):
+		_handle_obstacles_at(position, path, direction, "apply_on_start")
+		if not path.failed and not path.finished:
+			path.add_point(position)
+	else:
+		path.failed = true
 
 
-func get_all():
-	return
+func _travel_path(start, path: MovePath, iterations: int) -> Array:
+	var paths = []
+	var repeated = 1
+	_start_at_position(start, path)
+	while repeated <= iterations or iterations == -1:
+		for instruction in path.instructions:
+			if not path.failed and not path.finished:
+				_leave_position(path, instruction)
+	
+		path.finished = true
+		if not path.failed:
+			_handle_end_obstacles(path.end_position, path)
+		var duplicate = _duplicate_path(path)
+		paths.append(duplicate)
+		
+		if repeated >= 0:
+			repeated += 1
+			
+		if path.can_continue and not path.failed:
+			path.finished = false
+	return paths
 
 
-func get_in_dimens(position, dimens):
-	return
-
-
-func get_pattern_results(position, pattern):
-	return
-
-
-func add_obstacle(obstacle):
-	obstacles.append(obstacle)
-
-
-func clear_obstacles():
-	obstacles = Array()
-
-
-func remove_obstacle(obstacle):
-	obstacles.erase(obstacle)
+func pattern_results(start_position, pattern: MovePattern, obstacles: Array = []):
+	self.obstacles = obstacles
+	var results := []
+	var paths = _pattern_to_paths(pattern)
+	for path in paths:
+		var travels = _travel_path(start_position, path, pattern.repeat)
+		for travel in travels:
+			results.append(travel)
+	return results

@@ -65,14 +65,14 @@ _global_script_classes=[ {
 "path": "res://Examples/RPG Inventory/inventory_logic.gd"
 }, {
 "base": "Reference",
+"class": "MovePath",
+"language": "GDScript",
+"path": "res://src/grid/move_path.gd"
+}, {
+"base": "Reference",
 "class": "MovePattern",
 "language": "GDScript",
 "path": "res://src/grid/move_pattern.gd"
-}, {
-"base": "Reference",
-"class": "MoveSequence",
-"language": "GDScript",
-"path": "res://src/grid/move_sequence.gd"
 }, {
 "base": "Node2D",
 "class": "OverlapDetector2D",
@@ -99,11 +99,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://src/grid/square_grid/square_move_pattern.gd"
 }, {
-"base": "MoveSequence",
-"class": "SquareMoveSequence",
-"language": "GDScript",
-"path": "res://src/grid/square_grid/square_move_sequence.gd"
-}, {
 "base": "Node2D",
 "class": "Zone2D",
 "language": "GDScript",
@@ -121,14 +116,13 @@ _global_script_class_icons={
 "HexGrid": "",
 "HexGridBounds": "",
 "InventoryLogic": "",
+"MovePath": "",
 "MovePattern": "",
-"MoveSequence": "",
 "OverlapDetector2D": "",
 "Piece2D": "",
 "SquareGrid": "",
 "SquareGridBounds": "",
 "SquareMovePattern": "",
-"SquareMoveSequence": "",
 "Zone2D": ""
 }
 
