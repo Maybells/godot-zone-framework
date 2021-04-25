@@ -3,10 +3,6 @@ class_name GameLogic
 extends Node
 
 
-# If true, each id in an effect can only have one set of parameters. Adding a new set will overwrite the first.
-# If false, an id can have multiple sets of parameters.
-export (bool) var single_effect_params = true
-
 # An array of all pieces associated with this GameLogic
 var pieces = Array()
 # An array of all zones associated with this GameLogic
@@ -52,6 +48,12 @@ func move_piece(piece, zone) -> void:
 	zone.piece_added(piece)
 
 
+# Create a new effect with the given name and parameters. If an effect with that name already exists, it will be overwritten.
+func create_effect(name: String, single_id := false, single_params := true):
+	var effect = EffectGroup.new(name, single_id, single_params)
+	_effect_groups[name] = effect
+
+
 # Returns whether something with the given id is included in an effect.
 func has_effect(name: String, id) -> bool:
 	if name in _effect_groups:
@@ -61,9 +63,8 @@ func has_effect(name: String, id) -> bool:
 
 # Connect the given object to the signal for when the effect is updated.
 func connect_to_effect(name: String, target: Object, function: String):
-	if not name in _effect_groups:
-		_effect_groups[name] = EffectGroup.new(name)
-	_effect_groups[name].connect("updated", target, function)
+	if name in _effect_groups:
+		_effect_groups[name].connect("updated", target, function)
 
 
 # Signals listeners of an effect to update to new values.
@@ -72,17 +73,10 @@ func update_effect(name: String):
 		_effect_groups[name].update()
 
 
-# Adds the given id to an effect, creating the effect if not already created.
+# Adds the given id to an effect.
 func add_to_effect(name: String, id, params: Dictionary = {}) -> void:
-	if single_effect_params:
-		remove_from_effect(name, id)
-	
 	if name in _effect_groups:
 		_effect_groups[name].add(id, params)
-	else:
-		var effect = EffectGroup.new(name)
-		effect.add(id, params)
-		_effect_groups[name] = effect
 
 
 # Removes the given id from an effect.

@@ -9,14 +9,19 @@ signal updated
 var name: String
 # An array of ids under the effect
 var ids := {}
+# If true, will store only the most recently added id
+var single_id := false
+# If true, will store only the most recently added set of parameters for each id
+var single_params := true
 
 
-func _init(name: String, ids: Dictionary = {}):
+func _init(name: String, single_id = false, single_params = true):
 	self.name = name
-	self.ids = ids
+	self.single_id = single_id
+	self.single_params = single_params
 
 
-func update():
+func update() -> void:
 	emit_signal("updated")
 
 
@@ -36,8 +41,13 @@ func get_params_at(id) -> Array:
 # Adds the given id to the effect with the given parameters
 func add(id, params: Dictionary = {}) -> void:
 	if id in ids:
-		ids[id].append(params)
+		if single_params:
+			ids[id] = [params]
+		else:
+			ids[id].append(params)
 	else:
+		if single_id:
+			clear()
 		ids[id] = [params]
 
 
