@@ -46,7 +46,9 @@ func _sequence_from_string(string: String) -> Array:
 			else:
 				buffer += ch
 		else:
-			if ch.is_valid_integer():
+			if ch == "(":
+				buffer_active = true
+			elif ch.is_valid_integer():
 				repeat *= 10
 				repeat += int(ch)
 			else:
@@ -56,9 +58,11 @@ func _sequence_from_string(string: String) -> Array:
 
 
 func _handle_token(token: String, repeat: int) -> Array:
+	if repeat == 0:
+		repeat = 1
 	var out = Array()
 	var direction = _direction_from_token(token)
-	for i in range(repeat + 1):
+	for i in range(repeat):
 		out.append(direction)
 	return out
 

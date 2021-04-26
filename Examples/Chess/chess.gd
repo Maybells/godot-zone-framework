@@ -17,11 +17,12 @@ func _ready():
 	for point in $Grid.points:
 		var t = tile.instance()
 		t.id = index
-		game.register_zone(t)
 		t.position = $Grid.position + point
 		var rank = index % 8
 		var file = index / 8
+		t.location = Vector2(rank, file)
 		t.is_white = (rank + file) % 2 == 0
+		game.add_zone_at(t, t.location)
 		add_child(t)
 		
 		if file <= 1 or file >= 6:

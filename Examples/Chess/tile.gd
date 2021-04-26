@@ -1,26 +1,29 @@
-extends Zone
+extends Zone2D
 
-var white = Color(111/255.0, 143/255.0, 114/255.0)
-var black = Color(173/255.0, 189/255.0, 143/255.0)
-var highlighted = Color(1, 1, 1, 0.75)
+const WHITE = Color(111/255.0, 143/255.0, 114/255.0)
+const BLACK = Color(173/255.0, 189/255.0, 143/255.0)
+const HIGHLIGHT = Color(1, 1, 1, 0.75)
+
+
+var location
 var is_white = true
 var color
 
 
 func _ready():
-	game.connect("effect_changed", self, "_on_effect_changed")
-	
 	if is_white:
-		color = white
+		color = WHITE
 	else:
-		color = black
+		color = BLACK
+	
+	game.connect_to_effect("move_possibilities", self, "_on_effect_changed")
 
 
 func _draw():
 	var rect = Rect2($Corner.position, Vector2(64, 64))
 	draw_rect(rect, color)
-	if game.is_valid_endpoint(self):
-		draw_rect(rect, highlighted)
+	if game.has_effect("move_possibilities", location):
+		draw_rect(rect, HIGHLIGHT)
 
 
 func can_accept_piece(piece):
@@ -36,10 +39,10 @@ func reset_piece_position(piece):
 	piece.position = position
 
 
-func piece_added(piece, location = null):
+func piece_added(piece):
 	for p in pieces:
 		p.captured()
-	.piece_added(piece, location)
+	.piece_added(piece)
 	piece.position = position
 
 
@@ -48,4 +51,5 @@ func piece_removed(piece):
 
 
 func _on_effect_changed():
+	#print(id)
 	update()

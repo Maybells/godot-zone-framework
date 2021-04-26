@@ -4,11 +4,6 @@
 [ext_resource path="res://src/grid/square_grid/square_grid_generator.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Examples/Chess/fonts/lemon_milk/LEMONMILK-Regular.otf" type="DynamicFontData" id=3]
 
-
-
-
-
-
 [sub_resource type="DynamicFont" id=1]
 size = 32
 font_data = ExtResource( 3 )
@@ -31,7 +26,6 @@ columns = 8
 rows = 8
 cell_size = Vector2( 64, 64 )
 cell_margin = Vector2( 0, 0 )
-color = Color( 1, 1, 1, 1 )
 
 [node name="Label" type="Label" parent="."]
 margin_left = 90.0

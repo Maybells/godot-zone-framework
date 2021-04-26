@@ -38,7 +38,7 @@ func _duplicate_path(path: MovePath) -> MovePath:
 func _handle_obstacle(path: MovePath, obstacle: GridObstacle):
 	path.add_interaction(obstacle)
 	match obstacle.type:
-		GridObstacle.IMPASSABLE:
+		GridObstacle.BLOCK:
 			path.failed = true
 		GridObstacle.STICKY:
 			path.finished = true
@@ -93,7 +93,7 @@ func _travel_path(start, path: MovePath, iterations: int) -> Array:
 	var paths = []
 	var repeated = 1
 	_start_at_position(start, path)
-	while repeated <= iterations or iterations == -1:
+	while not path.failed and (repeated <= iterations or iterations == -1):
 		for instruction in path.instructions:
 			if not path.failed and not path.finished:
 				_leave_position(path, instruction)
@@ -112,7 +112,7 @@ func _travel_path(start, path: MovePath, iterations: int) -> Array:
 	return paths
 
 
-func pattern_results(start_position, pattern: MovePattern, obstacles: Array = []):
+func resolve_pattern(start_position, pattern: MovePattern, obstacles: Array = []) -> Array:
 	self.obstacles = obstacles
 	var results := []
 	var paths = _pattern_to_paths(pattern)
@@ -121,3 +121,15 @@ func pattern_results(start_position, pattern: MovePattern, obstacles: Array = []
 		for travel in travels:
 			results.append(travel)
 	return results
+
+
+func get_travelled_points(start_position, pattern: MovePattern, obstacles: Array = []) -> Array:
+	var points = []
+	var paths = resolve_pattern(start_position, pattern, obstacles)
+	for path in paths:
+		if not path.failed:
+			for point in path.path:
+				if not point in points:
+					points.append(point)
+	
+	return points

@@ -43,7 +43,7 @@ const CLOCKWISE = {
 }
 
 
-func _init(moves, mode = NONE, repeat = 0).(moves, mode, repeat):
+func _init(moves, mode = NONE, repeat = 1).(moves, mode, repeat):
 	pass
 
 

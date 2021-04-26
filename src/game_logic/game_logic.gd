@@ -4,9 +4,9 @@ extends Node
 
 
 # An array of all pieces associated with this GameLogic
-var pieces = Array()
+var pieces := {}
 # An array of all zones associated with this GameLogic
-var zones = Array()
+var zones := {}
 
 # A dictionary of EffectGroups stored by name
 var _effect_groups := Dictionary()
@@ -15,25 +15,25 @@ var _effect_groups := Dictionary()
 # Associates a piece with this GameLogic.
 func register_piece(piece) -> void:
 	piece.game = self
-	pieces.append(piece)
+	pieces[piece.id] = piece
 
 
 # Associates a zone with this GameLogic.
 func register_zone(zone) -> void:
 	zone.game = self
-	zones.append(zone)
+	zones[zone.id] = zone
 
 
 # Disassociates a piece from this GameLogic.
 func unregister_piece(piece) -> void:
 	piece.game = null
-	pieces.erase(piece)
+	pieces.erase(piece.id)
 
 
 # Disassociates a zone from this GameLogic.
 func unregister_zone(zone) -> void:
 	zone.game = null
-	zones.erase(zone)
+	zones.erase(zone.id)
 
 
 # Returns true if the game logic allows piece to go from start to end.
@@ -46,6 +46,11 @@ func move_piece(piece, zone) -> void:
 	piece.zone.piece_removed(piece)
 	piece.zone = zone
 	zone.piece_added(piece)
+
+
+# Returns an array of obstacles at the given zone
+func obstacles_in(zone_id, params := {}) -> Array:
+	return []
 
 
 # Create a new effect with the given name and parameters. If an effect with that name already exists, it will be overwritten.
@@ -90,7 +95,7 @@ func remove_from_effect(name: String, id) -> void:
 # If `single_effect_params` is false, returns an array of dictionaries
 func get_effect_params(name: String, id):
 	if name in _effect_groups:
-		if single_effect_params:
+		if _effect_groups[name].single_params:
 			var params = _effect_groups[name].get_params_at(id)
 			if params.empty():
 				return {}

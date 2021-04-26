@@ -6,7 +6,7 @@ class_name GridObstacle
 # IMPASSABLE stops movement and cannot be entered (e.g. a wall)
 # STICKY stops movement when entered (e.g. a rook can move into an occupied square but not beyond it)
 # INVALID_END cannot be the endpoint of a movement, but can be passed through
-enum {IMPASSABLE, STICKY, PUSH, REPEAT, TELEPORT, INVALID_END}
+enum {BLOCK, STICKY, PUSH, REPEAT, TELEPORT, INVALID_END}
 
 
 # The position of the obstacle in the grid
@@ -26,7 +26,8 @@ var apply_on_start := true
 var exceptions = Array()
 
 
-func _init(type = IMPASSABLE, params = {}):
+func _init(position, type = BLOCK, params = {}):
+	self.position = position
 	self.type = type
 	self.params = params
 
@@ -38,7 +39,7 @@ func add_exception(exception):
 
 # Returns whether the obstacle can be entered from the given direction.
 func covers(direction) -> bool:
-	return direction in exceptions
+	return not direction in exceptions
 
 
 # Returns the parameter with the given name, if it exists. Otherwise returns null.
