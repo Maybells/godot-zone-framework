@@ -93,7 +93,9 @@ func _travel_path(start, path: MovePath, iterations: int) -> Array:
 	var paths = []
 	var repeated = 1
 	_start_at_position(start, path)
-	while not path.failed and not path.finished and (repeated <= iterations or iterations == -1):
+	while path.can_continue and (repeated <= iterations or iterations == -1):
+		path.finished = false
+		
 		for instruction in path.instructions:
 			if not path.failed and not path.finished:
 				_leave_position(path, instruction)
@@ -101,14 +103,13 @@ func _travel_path(start, path: MovePath, iterations: int) -> Array:
 		path.finished = true
 		if not path.failed:
 			_handle_end_obstacles(path.end_position, path)
+		else:
+			path.can_continue = false
 		var duplicate = _duplicate_path(path)
 		paths.append(duplicate)
 		
 		if repeated >= 0:
 			repeated += 1
-			
-		if path.can_continue and not path.failed:
-			path.finished = false
 	return paths
 
 
