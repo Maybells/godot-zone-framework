@@ -93,7 +93,7 @@ func _travel_path(start, path: MovePath, iterations: int) -> Array:
 	var paths = []
 	var repeated = 1
 	_start_at_position(start, path)
-	while not path.failed and (repeated <= iterations or iterations == -1):
+	while not path.failed and not path.finished and (repeated <= iterations or iterations == -1):
 		for instruction in path.instructions:
 			if not path.failed and not path.finished:
 				_leave_position(path, instruction)
