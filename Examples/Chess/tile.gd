@@ -2,7 +2,8 @@ extends Zone2D
 
 const WHITE = Color(111/255.0, 143/255.0, 114/255.0)
 const BLACK = Color(173/255.0, 189/255.0, 143/255.0)
-const HIGHLIGHT = Color(1, 1, 1, 0.75)
+const HIGHLIGHT = Color(1, 1, 1, 0.9)
+const ORIGIN = Color(0.2, 0.4, 1, 0.4)
 
 
 var location
@@ -12,18 +13,15 @@ var color
 
 func _ready():
 	if is_white:
-		color = WHITE
+		$Base.color = WHITE
 	else:
-		color = BLACK
+		$Base.color = BLACK
 	
-	game.connect_to_effect("move_possibilities", self, "_on_effect_changed")
-
-
-func _draw():
-	var rect = Rect2($Corner.position, Vector2(64, 64))
-	draw_rect(rect, color)
-	if game.has_effect("move_possibilities", location):
-		draw_rect(rect, HIGHLIGHT)
+	$Highlight.color = HIGHLIGHT
+	$Origin.color = ORIGIN
+	
+	game.connect_to_effect("move_possibilities", self, "_on_move_possibilities_changed")
+	game.connect_to_effect("move_origin", self, "_on_move_origin_changed")
 
 
 func can_accept_piece(piece):
@@ -50,6 +48,9 @@ func piece_removed(piece):
 	.piece_removed(piece)
 
 
-func _on_effect_changed():
-	#print(id)
-	update()
+func _on_move_possibilities_changed():
+	$Highlight.visible = game.has_effect("move_possibilities", location)
+
+
+func _on_move_origin_changed():
+	$Origin.visible = game.has_effect("move_origin", location)

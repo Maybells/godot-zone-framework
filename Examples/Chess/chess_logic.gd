@@ -97,12 +97,18 @@ func _get_possible_moves(piece):
 
 func _highlight_moves(piece):
 	reset_effect("move_possibilities")
+	reset_effect("move_origin")
+	
 	var moves = _get_possible_moves(piece)
 	
 	for path in moves:
 		if not path.failed:
 			add_to_effect("move_possibilities", path.end_position)
+	
+	add_to_effect("move_origin", piece.zone.location)
+	
 	update_effect("move_possibilities")
+	update_effect("move_origin")
 
 
 # Returns an array of obstacles at the given zone
@@ -225,6 +231,7 @@ func piece_put_down(piece):
 	reset_effect("move_possibilities")
 	reset_effect("move_origin")
 	update_effect("move_possibilities")
+	update_effect("move_origin")
 
 
 func is_valid_endpoint(zone):
