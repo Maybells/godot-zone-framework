@@ -14,16 +14,6 @@ signal king_checked(color)
 signal king_not_checked(color)
 
 
-var pawn_up = SquareMovePattern.new("U")
-var pawn_up_capture = SquareMovePattern.new("(RU)", SquareMovePattern.MIRROR_X)
-var pawn_down = SquareMovePattern.new("D")
-var pawn_down_capture = SquareMovePattern.new("(RD)", SquareMovePattern.MIRROR_X)
-var bishop = SquareMovePattern.new("(RU)", SquareMovePattern.ROTATE_FULL, -1)
-var rook = SquareMovePattern.new("R", SquareMovePattern.ROTATE_FULL, -1)
-var knight = SquareMovePattern.new("2RU", SquareMovePattern.ROTATE_MIRROR)
-var short_diag = SquareMovePattern.new("(RU)", SquareMovePattern.ROTATE_FULL)
-var short_orthog = SquareMovePattern.new("R", SquareMovePattern.ROTATE_FULL)
-
 var current_turn = WHITE
 var game_ongoing = true
 
@@ -56,31 +46,8 @@ func _get_possibilities(piece):
 #	update_effects()
 
 
-func _get_patterns_from_piece(piece):
-	match piece.type:
-		PAWN:
-			return _get_pawn_pattern(piece)
-		KING:
-			return [short_orthog, short_diag]
-		QUEEN:
-			return [rook, bishop]
-		KNIGHT:
-			return [knight]
-		BISHOP:
-			return [bishop]
-		ROOK:
-			return [rook]
-
-
-func _get_pawn_pattern(piece):
-	if piece.is_white:
-		return [pawn_up, pawn_up_capture]
-	else:
-		return [pawn_down, pawn_down_capture]
-
-
 func _get_possible_moves(piece):
-	var patterns = _get_patterns_from_piece(piece)
+	var patterns = piece.get_move_patterns()
 	var start = piece.zone.location
 	var moves = []
 	for pattern in patterns:
@@ -134,41 +101,22 @@ func obstacles_in(zone_id, params := {}) -> Array:
 			if piece.is_white == color:
 				obstacle = GridObstacle.new(zone.location, GridObstacle.INVALID_END)
 				obstacles.append(obstacle)
+	elif type == PAWN:
+		var pos = params["start"]
+		var obstacle
+		for piece in zone.pieces:
+			if zone.location.x == pos.x or piece.color == color:
+				obstacle = GridObstacle.new(zone.location, GridObstacle.BLOCK)
+				obstacles.append(obstacle)
+		if zone.location.x != pos.x and zone.pieces.empty():
+			obstacle = GridObstacle.new(zone.location, GridObstacle.BLOCK)
+			obstacles.append(obstacle)
+	
 	return obstacles
 
 
 func _get_possible_attacks(piece):
 	pass
-
-
-func _generate_obstacles(piece):
-	pass
-	#grid.clear_obstacles()
-#	piece.pawn_diag_left = false
-#	piece.pawn_diag_right = false
-#
-#	for p in pieces:
-#		if p.is_white == piece.is_white:
-#			var obstacle = GridObstacle.new()
-#
-#			if piece.type == KNIGHT:
-#				obstacle.type = GridObstacle.INVALID_END
-#
-#			obstacle.position = _position_of_zone(p.zone)
-#			grid.add_obstacle(obstacle)
-#		else:
-#			var obstacle = GridObstacle.new(GridObstacle.STICKY)
-#			obstacle.position = _position_of_zone(p.zone)
-#
-#			if piece.type == PAWN:
-#				if not _is_pawn_diagonal(obstacle.position, piece):
-#					obstacle.type = GridObstacle.IMPASSABLE
-#				elif obstacle.position.x > _position_of_zone(piece.zone).x:
-#					piece.pawn_diag_right = true
-#				elif obstacle.position.x < _position_of_zone(piece.zone).x:
-#					piece.pawn_diag_left = true
-#
-#			grid.add_obstacle(obstacle)
 
 
 func _position_of_zone(zone):

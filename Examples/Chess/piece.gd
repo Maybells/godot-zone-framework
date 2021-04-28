@@ -11,6 +11,19 @@ const PIECE_MAP = {
 }
 
 
+var pawn_up = SquareMovePattern.new("U")
+var pawn_up_start = SquareMovePattern.new("U", SquareMovePattern.NONE, 2)
+var pawn_up_capture = SquareMovePattern.new("(RU)", SquareMovePattern.MIRROR_X)
+var pawn_down = SquareMovePattern.new("D")
+var pawn_down_start = SquareMovePattern.new("D", SquareMovePattern.NONE, 2)
+var pawn_down_capture = SquareMovePattern.new("(RD)", SquareMovePattern.MIRROR_X)
+var bishop = SquareMovePattern.new("(RU)", SquareMovePattern.ROTATE_FULL, -1)
+var rook = SquareMovePattern.new("R", SquareMovePattern.ROTATE_FULL, -1)
+var knight = SquareMovePattern.new("2RU", SquareMovePattern.ROTATE_MIRROR)
+var short_diag = SquareMovePattern.new("(RU)", SquareMovePattern.ROTATE_FULL)
+var short_orthog = SquareMovePattern.new("R", SquareMovePattern.ROTATE_FULL)
+
+
 var white = Color.white
 var black = Color.black
 
@@ -69,6 +82,35 @@ func _king_checked(color):
 func _king_not_checked(color):
 	if color == is_white:
 		$Sprite.material = null
+
+
+func _get_pawn_pattern():
+	if is_white:
+		if first_move:
+			return [pawn_up_start, pawn_up_capture]
+		else:
+			return [pawn_up, pawn_up_capture]
+	else:
+		if first_move:
+			return [pawn_down_start, pawn_down_capture]
+		else:
+			return [pawn_down, pawn_down_capture]
+
+
+func get_move_patterns():
+	match type:
+		ChessLogic.PAWN:
+			return _get_pawn_pattern()
+		ChessLogic.KING:
+			return [short_orthog, short_diag]
+		ChessLogic.QUEEN:
+			return [rook, bishop]
+		ChessLogic.KNIGHT:
+			return [knight]
+		ChessLogic.BISHOP:
+			return [bishop]
+		ChessLogic.ROOK:
+			return [rook]
 
 
 func captured():
