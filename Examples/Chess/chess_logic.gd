@@ -26,26 +26,7 @@ func _init().(chess_grid):
 	create_effect("move_origin")
 
 
-func _process(delta):
-	if Input.is_action_just_pressed("ui_up"):
-		var testing = SquareMovePattern.new("R", SquareMovePattern.ROTATE_FULL, 1)
-		var paths = grid.pattern_results(Vector2(0, 0), testing)
-#	elif Input.is_action_just_pressed("ui_down"):
-#		update_effect("testing")
-
-
-func _get_possibilities(piece):
-	reset_effect("move_possibilities")
-	reset_effect("move_origin")
-	
-#	_generate_obstacles(piece)
-#	var attacks = _get_possible_attacks(piece)
-#
-#	set_effect("move_possibilities", attacks)
-#	set_effect("move_origin", [_position_of_zone(piece.zone)])
-#	update_effects()
-
-
+# Returns an array of all possible and impossible moves a piece can take.
 func _get_possible_moves(piece):
 	var patterns = piece.get_move_patterns()
 	var start = piece.zone.location
@@ -62,6 +43,7 @@ func _get_possible_moves(piece):
 	return moves
 
 
+# Highlights all tiles that a given piece can be placed.
 func _highlight_moves(piece):
 	reset_effect("move_possibilities")
 	reset_effect("move_origin")
@@ -115,27 +97,6 @@ func obstacles_in(zone_id, params := {}) -> Array:
 	return obstacles
 
 
-func _get_possible_attacks(piece):
-	pass
-
-
-func _position_of_zone(zone):
-	pass
-
-
-func _is_pawn_diagonal(position, piece):
-	return false
-#	var location = _position_of_zone(piece.zone)
-#	if piece.is_white:
-#		return position == location + SquareMoveSequence.DIAG_UL or position == location + SquareMoveSequence.DIAG_UR
-#	else:
-#		return position == location + SquareMoveSequence.DIAG_DL or position == location + SquareMoveSequence.DIAG_DR
-
-
-func _is_in_check(color):
-	return false
-
-
 func _next_turn():
 	if game_ongoing:
 		current_turn = not current_turn
@@ -165,10 +126,6 @@ func move_piece(piece, to):
 	
 	.move_piece(piece, to)
 	_next_turn()
-	if _is_in_check(current_turn):
-		emit_signal("king_checked", current_turn)
-	if not _is_in_check(not current_turn):
-		emit_signal("king_not_checked", not current_turn)
 
 
 func piece_picked_up(piece):
@@ -180,11 +137,6 @@ func piece_put_down(piece):
 	reset_effect("move_origin")
 	update_effect("move_possibilities")
 	update_effect("move_origin")
-
-
-func is_valid_endpoint(zone):
-	var position = _position_of_zone(zone)
-	return has_effect("move_possibilities", position) or has_effect("move_origin", position)
 
 
 func end_game():
