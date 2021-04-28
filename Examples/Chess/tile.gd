@@ -2,8 +2,8 @@ extends Zone2D
 
 const WHITE = Color(111/255.0, 143/255.0, 114/255.0)
 const BLACK = Color(173/255.0, 189/255.0, 143/255.0)
-const HIGHLIGHT = Color(1, 1, 1, 0.9)
-const ORIGIN = Color(0.2, 0.4, 1, 0.4)
+const HIGHLIGHT = Color(1, 1, 1, 0.8)
+const ORIGIN = Color(1, 1, 0.2, 0.4)
 
 
 var location
