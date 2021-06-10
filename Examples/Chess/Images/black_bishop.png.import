@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/black_bishop.png-5ab828b91c6a9615f8a3005580befcd7.stex"
+path="res://.import/black_bishop.png-4d1e22fd8cca1a205a52ad5cd8ea568d.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/Chess/images/black_bishop.png"
-dest_files=[ "res://.import/black_bishop.png-5ab828b91c6a9615f8a3005580befcd7.stex" ]
+source_file="res://Examples/Chess/Images/black_bishop.png"
+dest_files=[ "res://.import/black_bishop.png-4d1e22fd8cca1a205a52ad5cd8ea568d.stex" ]
 
 [params]
 

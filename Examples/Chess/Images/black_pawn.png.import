@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/black_pawn.png-005036fc7016d911a1820ec13781110c.stex"
+path="res://.import/black_pawn.png-43c83c4a6850aee4222408b0807c4de0.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/Chess/images/black_pawn.png"
-dest_files=[ "res://.import/black_pawn.png-005036fc7016d911a1820ec13781110c.stex" ]
+source_file="res://Examples/Chess/Images/black_pawn.png"
+dest_files=[ "res://.import/black_pawn.png-43c83c4a6850aee4222408b0807c4de0.stex" ]
 
 [params]
 

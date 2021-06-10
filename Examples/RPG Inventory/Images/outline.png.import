@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/outline.png-bb05599fa2c83e14fef662eb641a5faf.stex"
+path="res://.import/outline.png-db453abad65c749c5caa1e0c39e6dbff.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/RPG Inventory/images/outline.png"
-dest_files=[ "res://.import/outline.png-bb05599fa2c83e14fef662eb641a5faf.stex" ]
+source_file="res://Examples/RPG Inventory/Images/outline.png"
+dest_files=[ "res://.import/outline.png-db453abad65c749c5caa1e0c39e6dbff.stex" ]
 
 [params]
 

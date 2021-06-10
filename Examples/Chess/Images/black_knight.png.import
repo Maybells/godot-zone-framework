@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/black_knight.png-a0abc2277c71ff29a1827ef79517d1c2.stex"
+path="res://.import/black_knight.png-d8965fc7afd468107427636f131d3e76.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Examples/Chess/images/black_knight.png"
-dest_files=[ "res://.import/black_knight.png-a0abc2277c71ff29a1827ef79517d1c2.stex" ]
+source_file="res://Examples/Chess/Images/black_knight.png"
+dest_files=[ "res://.import/black_knight.png-d8965fc7afd468107427636f131d3e76.stex" ]
 
 [params]
 
